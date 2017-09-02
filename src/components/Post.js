@@ -12,9 +12,11 @@ class Post extends Component {
     const { post} = this.props
 
     return (
-
-      <div className='post'>
-        <p> {post.body} {post.voteScore}</p>
+      <div className='card'>
+        <div className="card-body">
+          <h4 className="card-title">{post.author}</h4>
+          <p className="card-text"> {post.body} {post.voteScore}</p>
+        </div>
       </div>
     )
   }

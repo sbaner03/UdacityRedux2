@@ -16,7 +16,7 @@ class ShowCategories extends Component {
     return (
 
       <div className='list-categories'>
-        <h1> My Categories </h1>
+        <h4> My Categories </h4>
         <ol>
           {categories.map(category => (<ul key={categories.indexOf(category)}>
             <Category category = {category}></Category>

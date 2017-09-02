@@ -14,7 +14,7 @@ class Category extends Component {
     return (
 
       <div className='category'>
-        <p> {category.name} </p>
+        <a href="#" class="btn btn-primary">{category.name}</a>
       </div>
     )
   }
