@@ -59,12 +59,12 @@ function posts (state = initialPostState, action) {
 }
 
 
-function cats (state = initialCategoryState, action) {
+function categories (state = initialCategoryState, action) {
     return state
   }
 
 
 export default combineReducers({
   posts,
-  cats,
+  categories,
 })

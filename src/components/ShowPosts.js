@@ -11,7 +11,6 @@ class ShowPosts extends Component {
 
   render() {
     const { posts} = this.props
-    console.log(posts)
 
     return (
 

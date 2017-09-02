@@ -11,8 +11,6 @@ class ShowCategories extends Component {
 
   render() {
     const { categories} = this.props
-    console.log(categories)
-
     return (
 
       <div className='list-categories'>
@@ -27,10 +25,10 @@ class ShowCategories extends Component {
   }
 }
 
-function mapStateToProps ({ posts, cats }) {
+function mapStateToProps ({ posts, categories }) {
 
   return {
-    cats
+    categories
   }
 }
 

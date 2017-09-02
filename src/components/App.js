@@ -4,35 +4,26 @@ import '../index.css'
 import { Route } from 'react-router-dom'
 import ShowPosts from './ShowPosts'
 import ShowCategories from './ShowCategories'
+import { connect } from 'react-redux'
+
 
 
 
 class App extends Component {
-  state = {
-    posts:[],
-    categories: []
-  }
-
-  componentDidMount() {
-    postsApi.getAllPosts().then((posts) => {
-      this.setState({ posts })
-    })
-    postsApi.getAllCategories().then((categories) => {
-      this.setState({ categories })
-    })
-  }
-
 
   render() {
+    let posts = this.props.posts
+    let categories = this.props.categories
+    console.log(categories)
     return (
 
       <div className = "container-fluid">
         <div className = 'row'>
           <div className = "col-sm-3">
-            <Route exact path="/" className = "showcategories" render={({history}) => (<ShowCategories categories = {this.state.categories}/>)}/>
+            <Route exact path="/" className = "showcategories" render={({history}) => (<ShowCategories categories = {posts}/>)}/>
           </div>
           <div className = "col-sm-9">
-            <Route exact path="/" className = "showposts" render={({history}) => (<ShowPosts posts = {this.state.posts}/>)}/>
+            <Route exact path="/" className = "showposts" render={({history}) => (<ShowPosts posts = {categories}/>)}/>
           </div>
 
         </div>
@@ -41,4 +32,15 @@ class App extends Component {
   }
 }
 
-export default App;
+function mapStateToProps ({ posts, categories }) {
+
+  return {
+    posts: posts,
+    categories: categories
+
+  }
+}
+
+export default connect(
+  mapStateToProps
+)(App)
