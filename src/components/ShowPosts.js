@@ -8,16 +8,27 @@ import { connect } from 'react-redux'
 
 
 class ShowPosts extends Component {
-
+  static propTypes={
+    passedcategories: PropTypes.array.isRequired,
+  }
+  state = {
+    localposts: {}
+  }
+  componentWillMount() {
+    const { posts, categories} = this.props
+    let passedcatnamearray = this.props.passedcategories.map(x=>(x.name))
+    let localposts = posts.filter(x=>passedcatnamearray.indexOf(x.category)>-1)
+    this.setState({localposts})
+    console.log('ShowPosts', passedcatnamearray, localposts)
+  }
   render() {
-    const { posts} = this.props
 
     return (
 
       <div className='list-posts'>
         <h1> My Posts </h1>
         <ol>
-          {posts.map(post => (<ul key={post.id}>
+          {this.state.localposts.map(post => (<ul key={post.id}>
             <Post post = {post}></Post>
             </ul>))}
         </ol>
@@ -26,10 +37,11 @@ class ShowPosts extends Component {
   }
 }
 
-function mapStateToProps ({ posts, cats }) {
+function mapStateToProps ({ posts, categories }) {
 
   return {
-    posts
+  posts: posts,
+  categories: categories
   }
 }
 

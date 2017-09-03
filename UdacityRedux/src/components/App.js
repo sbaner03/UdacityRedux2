@@ -14,9 +14,6 @@ class App extends Component {
   render() {
     let posts = this.props.posts
     let categories = this.props.categories
-    let catnamearray = categories.map(x=>x.name)
-    let passedcategories = {}
-    console.log('catnamearray', catnamearray[0])
     return (
 
       <div className = "container-fluid">
@@ -25,8 +22,7 @@ class App extends Component {
             <Route exact path="/" className = "showcategories" render={({history}) => (<ShowCategories/>)}/>
           </div>
           <div className = "col-sm-9">
-            <Route exact path="/" className = "showposts" render={({history}) => (<ShowPosts passedcategories = {categories}/>)}/>
-            <Route exact path={`/${catnamearray[0]}`} render={({history}) => (<ShowPosts passedcategories = {categories.filter(x=>x.name===catnamearray[0])}/>)}/>
+            <Route exact path="/" className = "showposts" render={({history}) => (<ShowPosts categories = {categories}/>)}/>
           </div>
 
         </div>

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import ShowPosts from './ShowPosts'
-
 
 class Category extends Component {
   static propTypes={
@@ -16,9 +14,7 @@ class Category extends Component {
     return (
 
       <div className='category'>
-        <Link className="btn btn-primary" to={`/${category.name}`}>
-          {category.name}
-        </Link>
+        <a href="#" className="btn btn-primary">{category.name}</a>
       </div>
     )
   }
