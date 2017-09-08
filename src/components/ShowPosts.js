@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Post from './Post'
 import { connect } from 'react-redux'
+import sortBy from 'sort-by'
+
 
 
 
@@ -12,9 +14,10 @@ class ShowPosts extends Component {
     passedcategories: PropTypes.array.isRequired,
   }
   state = {
-    localposts: {}
+    localposts: this.props.posts,
+    commentstatus: false
   }
-  componentWillMount() {
+  componentDidMount() {
     const { posts, categories} = this.props
     let passedcatnamearray = this.props.passedcategories.map(x=>(x.name))
     let localposts = posts.filter(x=>passedcatnamearray.indexOf(x.category)>-1)
@@ -27,11 +30,18 @@ class ShowPosts extends Component {
 
       <div className='list-posts'>
         <h1> My Posts </h1>
-        <ol>
-          {this.state.localposts.map(post => (<ul key={post.id}>
-            <Post post = {post}></Post>
-            </ul>))}
-        </ol>
+        <div>
+          <div>
+            <p> Show Controls </p>
+          </div>
+          <div>
+            <ol>
+              {this.state.localposts.map(post => (<ul key={post.id}>
+                <Post post = {post}></Post>
+                </ul>))}
+            </ol>
+          </div>
+        </div>
       </div>
     )
   }

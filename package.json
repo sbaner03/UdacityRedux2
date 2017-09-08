@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "bootstrap": "^3.3.7",
     "react": "^15.6.1",
     "react-bootstrap": "^0.31.2",
     "react-dom": "^15.6.1",
-    "react-scripts": "1.0.12",
-    "bootstrap": "^3.3.7",
-    "react-bootstrap": "^0.31.2"
+    "react-icons": "^2.2.5",
+    "react-scripts": "1.0.12"
   },
   "scripts": {
     "start": "react-scripts start",

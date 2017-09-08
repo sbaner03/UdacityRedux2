@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import * as postsApi from './postsApi'
 import '../index.css'
-import { Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import ShowPosts from './ShowPosts'
 import ShowCategories from './ShowCategories'
 import { connect } from 'react-redux'
+import { changeCommentVote } from '../actions'
 
 
 
@@ -25,8 +26,11 @@ class App extends Component {
             <Route exact path="/" className = "showcategories" render={({history}) => (<ShowCategories/>)}/>
           </div>
           <div className = "col-sm-9">
-            <Route exact path="/" className = "showposts" render={({history}) => (<ShowPosts passedcategories = {categories}/>)}/>
-            <Route exact path={`/${catnamearray[0]}`} render={({history}) => (<ShowPosts passedcategories = {categories.filter(x=>x.name===catnamearray[0])}/>)}/>
+            <Switch>
+              <Route exact path="/" className = "showposts" render={({history}) => (<ShowPosts passedcategories = {categories}/>)}/>
+              {catnamearray.map(catname=>(<Route key = {catname} exact path={`/${catname}`} render={({history}) => (<ShowPosts passedcategories = {categories.filter(x=>x.name===catname)}/>)}/>))}
+
+            </Switch>
           </div>
 
         </div>
@@ -44,6 +48,11 @@ function mapStateToProps ({ posts, categories }) {
   }
 }
 
+const mapDispatchToProps = dispatch => ({
+  changeCommentVote: (id,voteaction) => dispatch(changeCommentVote(id,voteaction))
+});
+
+
 export default connect(
-  mapStateToProps
+  mapStateToProps,mapDispatchToProps
 )(App)

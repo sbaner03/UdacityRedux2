@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux';
+import {PostVote} from './PostVote'
+
+
+
 
 class Post extends Component {
   static propTypes={
@@ -13,13 +18,16 @@ class Post extends Component {
 
     return (
       <div className='card'>
+
         <div className="card-body">
-          <h4 className="card-title">{post.author}</h4>
-          <p className="card-text"> {post.body} {post.voteScore}</p>
+          <h4 className="card-title">{post.author} <PostVote postdata = {post.id} > </PostVote></h4>
+          <p className="card-text"> {post.body}</p>
+
         </div>
       </div>
     )
   }
 }
+
 
 export default Post;
