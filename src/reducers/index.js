@@ -48,7 +48,7 @@ const initialCommentState = [{'author': 'thingtwo',
   'timestamp': 1469479767190,
   'voteScore': -5}]
 
-function posts (state = [], action) {
+function posts (state = initialPostState, action) {
   let postid = ''
   switch (action.type) {
     case RECEIVE_ALL_POSTS:
@@ -69,7 +69,6 @@ function posts (state = [], action) {
       postid = action.postid
       return state.filter(x=>x.id!==postid)
     case CHANGE_POST_VOTE:
-
       postid = action.postid
       let voteaction =action.voteaction
       let targetpost = state.filter(x=>x.id===postid)

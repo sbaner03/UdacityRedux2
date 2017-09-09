@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import FaCaretDown from 'react-icons/lib/fa/caret-square-o-down';
+
 import { connect } from 'react-redux';
-import { changePostVote } from '../actions';
 
 class PostComment extends Component {
   static propTypes={
-    postid: PropTypes.string.isRequired
+    post: PropTypes.object.isRequired
   }
   state = {
     localcomments: []
@@ -13,17 +14,22 @@ class PostComment extends Component {
 
   render() {
     const comments = this.props.comments
-    let localcomments = comments.filter(x=>(x.parentId===this.props.postid))
+    let localcomments = comments.filter(x=>(x.parentId===this.props.post.id))
     return (
-      <ul>
-        {localcomments.map(x=>(<li key = {x.id}>{x.body}</li>))}
-      </ul>
+      <div>
+        <div> {this.props.post.body} </div>
+        <div>
+          <br/>
+          {localcomments.length===0? <h5> 'No Comments for this Post' </h5>:<h5> 'Comments' </h5>}
+          {localcomments.map(x=>(<div key = {x.id}>{x.body}</div>))}
+        </div>
+      </div>
     )
   }
 }
 
 
-function mapStateToProps ({ comments }) {
+function mapStateToProps ({ posts, comments }) {
 
   return {
   comments: comments}

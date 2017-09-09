@@ -6,17 +6,16 @@ import PostVote from './PostVote'
 import PostComment from './PostComment'
 import FaCaretDown from 'react-icons/lib/fa/caret-square-o-down';
 
-
-
-
-
 class Post extends Component {
   static propTypes={
     post: PropTypes.object.isRequired,
-    commentstatus: PropTypes.bool.isRequired
   }
-
-
+  state = {
+    commentstatus:false
+  }
+  updateStatus=function(status){
+    status? this.setState({commentstatus:false}):this.setState({commentstatus:true})
+  }
   render() {
     const { post} = this.props
     return (
@@ -31,12 +30,12 @@ class Post extends Component {
               <PostVote postid = {post.id}/>
             </div>
             <div className = "col-sm-2">
-              <FaCaretDown/>
+              <FaCaretDown onClick={(event) => this.updateStatus(this.state.commentstatus)}/>
             </div>
           </div>
           <div>
               <div className="card-text">
-                {this.props.commentstatus ? <PostComment postid = {post.id}> </PostComment> :post.body}
+                {this.state.commentstatus ? <PostComment post = {post}> </PostComment> : <p> {post.body} </p>}
               </div>
           </div>
         </div>
