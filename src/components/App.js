@@ -17,7 +17,6 @@ class App extends Component {
     let categories = this.props.categories
     let catnamearray = categories.map(x=>x.name)
     let passedcategories = {}
-    console.log('catnamearray', catnamearray[0])
     return (
 
       <div className = "container-fluid">
@@ -48,11 +47,6 @@ function mapStateToProps ({ posts, categories }) {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  changeCommentVote: (id,voteaction) => dispatch(changeCommentVote(id,voteaction))
-});
 
 
-export default connect(
-  mapStateToProps,mapDispatchToProps
-)(App)
+export default connect(mapStateToProps)(App)

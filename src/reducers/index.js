@@ -6,7 +6,8 @@ import {
   CHANGE_POST_VOTE,
   ADD_COMMENT,
   DELETE_COMMENT,
-  CHANGE_COMMENT_VOTE
+  CHANGE_COMMENT_VOTE,
+  RECEIVE_ALL_POSTS
 } from '../actions'
 
 const initialPostState = [{'author': 'thingtwo',
@@ -30,7 +31,7 @@ const initialCategoryState = [{'name': 'react', 'path': 'react'},
  {'name': 'redux', 'path': 'redux'},
  {'name': 'udacity', 'path': 'udacity'}]
 
- const initialCommentState = [{'author': 'thingtwo',
+const initialCommentState = [{'author': 'thingtwo',
   'body': 'Hi there! I am a COMMENT.',
   'deleted': false,
   'id': '894tuq4ut84ut8v4t8wun89g',
@@ -48,7 +49,11 @@ const initialCategoryState = [{'name': 'react', 'path': 'react'},
   'voteScore': -5}]
 
 function posts (state = initialPostState, action) {
+  let postid = ''
   switch (action.type) {
+    case RECEIVE_ALL_POSTS:
+      const posts = action.getposts
+      return posts
     case ADD_POST :
       const { author,body,category,title } = action
       let newObj = {}
@@ -62,15 +67,21 @@ function posts (state = initialPostState, action) {
         ...state,newObj,
       }
     case DELETE_POST:
-      const {postid} = action
+      postid = action.postid
       return state.filter(x=>x.id!==postid)
     case CHANGE_POST_VOTE:
-      const {postidx, voteaction} = action
+
+      postid = action.postid
+      let voteaction =action.voteaction
+      let targetpost = state.filter(x=>x.id===postid)
+      let idx = state.indexOf(targetpost[0])
+      let voteScore = targetpost[0].voteScore
       if (voteaction==='up'){
-          state[postidx]['voteScore']+=1
+          voteScore+=1
       } else{
-        state[postidx]['voteScore']-=1
+        voteScore-=1
       }
+      state[idx]['voteScore'] = voteScore
       return state
 
     default :

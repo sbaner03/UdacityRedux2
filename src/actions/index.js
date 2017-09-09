@@ -1,9 +1,27 @@
+import * as PostsAPI from '../components/postsApi'
 export const ADD_POST = 'ADD_POST'
 export const DELETE_POST = 'DELETE_POST'
 export const ADD_COMMENT = 'ADD_COMMENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const CHANGE_COMMENT_VOTE = 'CHANGE_COMMENT_VOTE'
 export const CHANGE_POST_VOTE = 'CHANGE_POST_VOTE'
+export const RECEIVE_ALL_POSTS = "RECEIVE_ALL_POSTS";
+
+
+export const getAllPosts = getposts => ({
+  type: RECEIVE_ALL_POSTS,
+  getposts
+});
+
+
+
+
+export function fetchAllPosts(){
+  PostsAPI.apigetAllPosts().then(data=>{console.log('API', data)})
+  return (dispatch)=>{
+    PostsAPI.apigetAllPosts().then(data=>{dispatch({type: 'RECEIVE_ALL_POSTS', getposts: data})})
+  }
+}
 
 export function addPost ({ author, body, category, title }) {
   return {
@@ -44,15 +62,15 @@ export function delComment ({ commentid}) {
 export function changeCommentVote ({ id,voteaction}) {
   return {
     type: CHANGE_COMMENT_VOTE,
-    id, // can be post id or comment id
+    id,
     voteaction
   }
 }
 
-export function changePostVote ({ id,voteaction}) {
+export function changePostVote ({ postid,voteaction}) {
   return {
     type: CHANGE_POST_VOTE,
-    id, // can be post id or comment id
+    postid,
     voteaction
   }
 }

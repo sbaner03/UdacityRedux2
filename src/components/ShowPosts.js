@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import Post from './Post'
 import { connect } from 'react-redux'
 import sortBy from 'sort-by'
+import { getAllPosts } from '../actions';
 
 
 
@@ -18,22 +19,20 @@ class ShowPosts extends Component {
     commentstatus: false
   }
   componentDidMount() {
-    const { posts, categories} = this.props
+    const { categories} = this.props
+    const getAllPosts = this.props.getAllPosts
+    let posts = getAllPosts()
     let passedcatnamearray = this.props.passedcategories.map(x=>(x.name))
     let localposts = posts.filter(x=>passedcatnamearray.indexOf(x.category)>-1)
     this.setState({localposts})
-    console.log('ShowPosts', passedcatnamearray, localposts)
   }
   render() {
 
     return (
 
       <div className='list-posts'>
-        <h1> My Posts </h1>
+        <h2> My Posts </h2>
         <div>
-          <div>
-            <p> Show Controls </p>
-          </div>
           <div>
             <ol>
               {this.state.localposts.map(post => (<ul key={post.id}>
@@ -54,7 +53,9 @@ function mapStateToProps ({ posts, categories }) {
   categories: categories
   }
 }
+const mapDispatchToProps = dispatch => ({
+  getAllPosts: (action) => dispatch(getAllPosts(action))
+})
 
-export default connect(
-  mapStateToProps
-)(ShowPosts)
+export default connect(mapStateToProps,
+  mapDispatchToProps)(ShowPosts)
