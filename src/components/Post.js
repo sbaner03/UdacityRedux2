@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
 import PostVote from './PostVote'
+import PostComment from './PostComment'
 import FaCaretDown from 'react-icons/lib/fa/caret-square-o-down';
 
 
@@ -11,13 +12,13 @@ import FaCaretDown from 'react-icons/lib/fa/caret-square-o-down';
 
 class Post extends Component {
   static propTypes={
-    post: PropTypes.object.isRequired
+    post: PropTypes.object.isRequired,
+    commentstatus: PropTypes.bool.isRequired
   }
 
 
   render() {
     const { post} = this.props
-
     return (
       <div className='card'>
 
@@ -34,7 +35,9 @@ class Post extends Component {
             </div>
           </div>
           <div>
-              <p className="card-text"> {post.body}</p>
+              <div className="card-text">
+                {this.props.commentstatus ? <PostComment postid = {post.id}> </PostComment> :post.body}
+              </div>
           </div>
         </div>
       </div>

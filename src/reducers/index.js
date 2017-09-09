@@ -52,8 +52,7 @@ function posts (state = initialPostState, action) {
   let postid = ''
   switch (action.type) {
     case RECEIVE_ALL_POSTS:
-      const posts = action.getposts
-      return posts
+      return action.posts
     case ADD_POST :
       const { author,body,category,title } = action
       let newObj = {}

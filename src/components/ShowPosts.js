@@ -7,38 +7,31 @@ import sortBy from 'sort-by'
 import { getAllPosts } from '../actions';
 
 
-
-
-
 class ShowPosts extends Component {
   static propTypes={
     passedcategories: PropTypes.array.isRequired,
   }
   state = {
-    localposts: this.props.posts,
+    localposts: [],
     commentstatus: false
   }
   componentDidMount() {
-    const { categories} = this.props
-    const getAllPosts = this.props.getAllPosts
-    let posts = getAllPosts()
+    const { posts, categories} = this.props
     let passedcatnamearray = this.props.passedcategories.map(x=>(x.name))
-    let localposts = posts.filter(x=>passedcatnamearray.indexOf(x.category)>-1)
-    this.setState({localposts})
+    this.setState({localposts: posts.filter(x=>passedcatnamearray.indexOf(x.category)>-1)})
   }
   render() {
-
     return (
 
       <div className='list-posts'>
         <h2> My Posts </h2>
         <div>
           <div>
-            <ol>
-              {this.state.localposts.map(post => (<ul key={post.id}>
-                <Post post = {post}></Post>
-                </ul>))}
-            </ol>
+            <ul>
+              {this.state.localposts.map(post => (<li key={post.id}>
+                <Post post = {post} commentstatus = {this.state.commentstatus}></Post>
+                </li>))}
+            </ul>
           </div>
         </div>
       </div>
@@ -48,14 +41,15 @@ class ShowPosts extends Component {
 
 function mapStateToProps ({ posts, categories }) {
 
-  return {
-  posts: posts,
-  categories: categories
-  }
+  return ({
+    posts: posts,
+    categories: categories
+  })
 }
+
 const mapDispatchToProps = dispatch => ({
   getAllPosts: (action) => dispatch(getAllPosts(action))
 })
 
-export default connect(mapStateToProps,
-  mapDispatchToProps)(ShowPosts)
+
+export default connect(mapStateToProps,mapDispatchToProps)(ShowPosts)

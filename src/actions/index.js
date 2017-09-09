@@ -8,18 +8,9 @@ export const CHANGE_POST_VOTE = 'CHANGE_POST_VOTE'
 export const RECEIVE_ALL_POSTS = "RECEIVE_ALL_POSTS";
 
 
-export const getAllPosts = getposts => ({
-  type: RECEIVE_ALL_POSTS,
-  getposts
-});
-
-
-
-
-export function fetchAllPosts(){
-  PostsAPI.apigetAllPosts().then(data=>{console.log('API', data)})
+export function getAllPosts(){
   return (dispatch)=>{
-    PostsAPI.apigetAllPosts().then(data=>{dispatch({type: 'RECEIVE_ALL_POSTS', getposts: data})})
+    PostsAPI.apigetAllPosts().then(data => dispatch({type: RECEIVE_ALL_POSTS, posts: data}))
   }
 }
 
