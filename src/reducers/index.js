@@ -48,7 +48,7 @@ const initialCommentState = [{'author': 'thingtwo',
   'timestamp': 1469479767190,
   'voteScore': -5}]
 
-function posts (state = initialPostState, action) {
+function posts (state = [], action) {
   let postid = ''
   switch (action.type) {
     case RECEIVE_ALL_POSTS:

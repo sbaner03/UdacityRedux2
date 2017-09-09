@@ -7,12 +7,21 @@ export const CHANGE_COMMENT_VOTE = 'CHANGE_COMMENT_VOTE'
 export const CHANGE_POST_VOTE = 'CHANGE_POST_VOTE'
 export const RECEIVE_ALL_POSTS = "RECEIVE_ALL_POSTS";
 
-
-export function getAllPosts(){
-  return (dispatch)=>{
-    PostsAPI.apigetAllPosts().then(data => dispatch({type: RECEIVE_ALL_POSTS, posts: data}))
-  }
+export function itemsgetAllPosts(posts) {
+    return {
+        type: 'RECEIVE_ALL_POSTS',
+        posts
+    };
 }
+
+export function fetchAllPosts() {
+    return (dispatch) => {
+        PostsAPI.apigetAllPosts()
+            .then((posts) => {
+                dispatch(itemsgetAllPosts(posts))})
+    };
+}
+
 
 export function addPost ({ author, body, category, title }) {
   return {
