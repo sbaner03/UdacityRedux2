@@ -16,7 +16,8 @@ class ShowPosts extends Component {
   state = {
     localposts: [],
     sortingKey: 'timestamp',
-    showAddPostModal: false}
+    showAddPostModal: false,
+    allposts:[]}
 
   addPostModal = (e)=>{
     this.setState({showAddPostModal: true})
@@ -26,10 +27,9 @@ class ShowPosts extends Component {
   }
 
   componentDidMount() {
-    const {posts} = this.props.getAllPosts()
+    this.props.getAllPosts((allposts)=>{this.setState({allposts})})
     let passedcatnamearray = this.props.passedcategories.map(x=>(x.name))
-    let localposts = posts.filter(x=>passedcatnamearray.indexOf(x.category)>-1).sort(sortBy(this.state.sortingKey))
-    console.log(localposts)
+    let localposts = this.state.allposts.filter(x=>passedcatnamearray.indexOf(x.category)>-1).sort(sortBy(this.state.sortingKey))
     this.setState({localposts})
   }
   render() {

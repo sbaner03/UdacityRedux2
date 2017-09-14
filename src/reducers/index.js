@@ -53,7 +53,7 @@ function posts (state = initialPostState, action) {
   switch (action.type) {
     case RECEIVE_ALL_POSTS:
       return action.posts
-    case ADD_POST :
+    case ADD_POST : // return array not object
       const { author,body,category,title } = action
       let newObj = {}
       newObj['author'] = author
@@ -62,9 +62,8 @@ function posts (state = initialPostState, action) {
       newObj['title'] = title
       newObj['id'] = 'testingID'
       newObj['timestamp'] = 'testingtimeStamp'
-      return {
-        ...state,newObj,
-      }
+      let newState  = [...state].push(newObj)
+      return newState
     case DELETE_POST:
       postid = action.postid
       return state.filter(x=>x.id!==postid)
