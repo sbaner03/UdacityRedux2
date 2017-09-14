@@ -48,7 +48,7 @@ const initialCommentState = [{'author': 'thingtwo',
   'timestamp': 1469479767190,
   'voteScore': -5}]
 
-function posts (state = initialPostState, action) {
+function posts (state=initialPostState, action) {
   let postid = ''
   switch (action.type) {
     case RECEIVE_ALL_POSTS:
@@ -66,7 +66,9 @@ function posts (state = initialPostState, action) {
       return newState
     case DELETE_POST:
       postid = action.postid
-      return state.filter(x=>x.id!==postid)
+      state[postid]['deleted'] = true
+      return [...state]
+
     case CHANGE_POST_VOTE:
       postid = action.postid
       let voteaction =action.voteaction
@@ -101,8 +103,10 @@ function comments (state = initialCommentState, action) {
         ...state,newObj,
       }
     case DELETE_COMMENT:
-      const {commentid} = action
-      return state.filter(x=>x.id!==commentid)
+      const commentid = action.commentid
+      state[commentid]['deleted'] = true
+      return [...state]
+
     case CHANGE_COMMENT_VOTE:
       const {commentidx, voteaction} = action
       if (voteaction==='up'){

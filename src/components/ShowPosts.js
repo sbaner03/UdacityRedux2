@@ -27,9 +27,8 @@ class ShowPosts extends Component {
   }
 
   componentDidMount() {
-    this.props.getAllPosts((allposts)=>{this.setState({allposts})})
     let passedcatnamearray = this.props.passedcategories.map(x=>(x.name))
-    let localposts = this.state.allposts.filter(x=>passedcatnamearray.indexOf(x.category)>-1).sort(sortBy(this.state.sortingKey))
+    let localposts = this.props.posts.filter(x=>passedcatnamearray.indexOf(x.category)>-1).sort(sortBy(this.state.sortingKey))
     this.setState({localposts})
   }
   render() {
@@ -55,16 +54,16 @@ class ShowPosts extends Component {
   }
 }
 
-//function mapStateToProps ({ posts }) {
+function mapStateToProps ({ posts }) {
 
-//  return ({
-//    posts: posts,
-//  })
-//}
+  return ({
+    posts: posts,
+  })
+}
 const mapDispatchToProps = dispatch => ({
   addPost: () => dispatch(addPost()),
-  getAllPosts: () => dispatch(fetchAllPosts())
+  getAllPosts: () => fetchAllPosts()(dispatch)
 })
 
 
-export default connect(null,mapDispatchToProps)(ShowPosts)
+export default connect(mapStateToProps,mapDispatchToProps)(ShowPosts)
