@@ -27,3 +27,17 @@ export const getPostComments = (post_id) =>
   fetch(`${api}/posts/${post_id}/comments`, { headers })
     .then(res => res.json())
     .then(data => data)
+
+export const addPost = (post_id,data) =>
+fetch(`${api}/posts/${post_id}`, {
+  method: 'POST',
+  headers: headers,
+  body: JSON.stringify(data)
+})
+
+export const addPostVote = (post_id, option) =>
+  fetch(`${api}/posts/${post_id}`, {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({ option: 'upVote' })
+  })

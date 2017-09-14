@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../index.css'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, withRouter } from 'react-router-dom';
 import ShowPosts from './ShowPosts'
 import ShowCategories from './ShowCategories'
 import { connect } from 'react-redux'
@@ -44,4 +44,4 @@ function mapStateToProps ({ categories }) {
 
 
 
-export default connect(mapStateToProps)(App)
+export default withRouter(connect(mapStateToProps)(App));

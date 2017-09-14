@@ -5,7 +5,7 @@ import Post from './Post'
 import { connect } from 'react-redux'
 import sortBy from 'sort-by'
 import AddSign from 'react-icons/lib/md/add-circle';
-import { addPost } from '../actions';
+import { addPost, fetchAllPosts} from '../actions';
 import CustomModal from './CustomModal'
 import shortid from 'shortid'
 
@@ -26,7 +26,7 @@ class ShowPosts extends Component {
   }
 
   componentDidMount() {
-    const {posts} = this.props
+    const {posts} = this.props.getAllPosts()
     let passedcatnamearray = this.props.passedcategories.map(x=>(x.name))
     let localposts = posts.filter(x=>passedcatnamearray.indexOf(x.category)>-1).sort(sortBy(this.state.sortingKey))
     console.log(localposts)
@@ -55,15 +55,16 @@ class ShowPosts extends Component {
   }
 }
 
-function mapStateToProps ({ posts }) {
+//function mapStateToProps ({ posts }) {
 
-  return ({
-    posts: posts,
-  })
-}
+//  return ({
+//    posts: posts,
+//  })
+//}
 const mapDispatchToProps = dispatch => ({
-  addPost: () => dispatch(addPost())
+  addPost: () => dispatch(addPost()),
+  getAllPosts: () => dispatch(fetchAllPosts())
 })
 
 
-export default connect(mapStateToProps,mapDispatchToProps)(ShowPosts)
+export default connect(null,mapDispatchToProps)(ShowPosts)

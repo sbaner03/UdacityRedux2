@@ -7,9 +7,9 @@ export const CHANGE_COMMENT_VOTE = 'CHANGE_COMMENT_VOTE'
 export const CHANGE_POST_VOTE = 'CHANGE_POST_VOTE'
 export const RECEIVE_ALL_POSTS = "RECEIVE_ALL_POSTS";
 
-export function itemsgetAllPosts(posts) {
+export function getAllPosts(posts) {
     return {
-        type: 'RECEIVE_ALL_POSTS',
+        type: RECEIVE_ALL_POSTS,
         posts
     };
 }
@@ -18,7 +18,7 @@ export function fetchAllPosts() {
     return (dispatch) => {
         PostsAPI.apigetAllPosts()
             .then((posts) => {
-                dispatch(itemsgetAllPosts(posts))})
+                dispatch(getAllPosts(posts))})
     };
 }
 
@@ -73,4 +73,13 @@ export function changePostVote ({ postid,voteaction}) {
     postid,
     voteaction
   }
+}
+
+export function postPostVote({postid,voteaction}) {
+    return (dispatch) => {
+        let apivoteaction = voteaction === 'up'?'upVote':'downVote'
+        PostsAPI.addPostVote(postid,apivoteaction)
+            .then((postid,voteaction) => {
+                dispatch(changePostVote(postid,voteaction))})
+    };
 }

@@ -80,8 +80,7 @@ function posts (state = initialPostState, action) {
         voteScore-=1
       }
       state[idx]['voteScore'] = voteScore
-      return state
-
+      return [...state]
     default :
       return state
   }
