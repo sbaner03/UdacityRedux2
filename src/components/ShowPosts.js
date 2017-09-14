@@ -26,12 +26,10 @@ class ShowPosts extends Component {
     this.setState({showAddPostModal: false})
   }
 
-  componentDidMount() {
-    let passedcatnamearray = this.props.passedcategories.map(x=>(x.name))
-    let localposts = this.props.posts.filter(x=>passedcatnamearray.indexOf(x.category)>-1).sort(sortBy(this.state.sortingKey))
-    this.setState({localposts})
-  }
   render() {
+      let passedcatnamearray = this.props.passedcategories.map(x=>(x.name))
+      let localposts = this.props.posts.filter(x=>passedcatnamearray.indexOf(x.category)>-1).sort(sortBy(this.state.sortingKey))
+      console.log(localposts)
       return (
 
       <div className='list-posts'>
@@ -40,7 +38,7 @@ class ShowPosts extends Component {
           <h4> My Posts </h4>
           <div>
             <p> Put the post sorter here </p>
-            {this.state.localposts.map(post => (<div key={post.id}>
+            {localposts.map(post => (<div key={post.id}>
                 <Post post = {post} commentstatus = {this.state.commentstatus}></Post>
                 </div>))}
           </div>

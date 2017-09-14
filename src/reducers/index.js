@@ -1,3 +1,4 @@
+import * as PostAPI from '../components/postsApi'
 import { combineReducers } from 'redux'
 
 import {
@@ -17,7 +18,7 @@ const initialPostState = [{'author': 'thingtwo',
   'id': '8xf0y6ziyjabvozdd253nd',
   'timestamp': 1467166872634,
   'title': 'Udacity is the best place to learn React',
-  'voteScore': 6},
+  'voteScore': 10},
  {'author': 'thingone',
   'body': 'Just kidding. It takes more than 10 minutes to learn technology.',
   'category': 'redux',
