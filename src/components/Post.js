@@ -37,7 +37,7 @@ class Post extends Component {
           <div>
 
               <div className="card-text">
-                {this.state.detailedstatus? <PostCard post={post} detailedstatus = {this.state.detailedstatus}> </PostCard> : <p></p> }
+                {this.state.detailedstatus? <PostCard post={post}> </PostCard> : <p></p> }
               </div>
           </div>
         </div>

@@ -5,7 +5,7 @@ import Post from './Post'
 import { connect } from 'react-redux'
 import sortBy from 'sort-by'
 import AddSign from 'react-icons/lib/md/add-circle';
-import { addPost, fetchAllPosts} from '../actions';
+import { addPost, fetchAllPosts, fetchPostComments} from '../actions';
 import CustomModal from './CustomModal'
 import shortid from 'shortid'
 
@@ -68,7 +68,7 @@ function mapStateToProps ({ posts }) {
 const mapDispatchToProps = dispatch => ({
   addPost: () => dispatch(addPost()),
   getAllPosts: () => fetchAllPosts()(dispatch),
-
+  getPostComments: (postid) => fetchPostComments(postid)(dispatch)
 })
 
 
