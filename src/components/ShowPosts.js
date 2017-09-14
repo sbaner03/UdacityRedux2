@@ -1,52 +1,69 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+import '../index.css'
 import PropTypes from 'prop-types'
 import Post from './Post'
 import { connect } from 'react-redux'
 import sortBy from 'sort-by'
-import * as PostsAPI from '../components/postsApi';
-
+import AddSign from 'react-icons/lib/md/add-circle';
+import { addPost } from '../actions';
+import CustomModal from './CustomModal'
+import shortid from 'shortid'
 
 class ShowPosts extends Component {
   static propTypes={
-    passedcategories: PropTypes.array.isRequired,
+    passedcategories: PropTypes.array.isRequired
   }
   state = {
-    localposts: []  }
+    localposts: [],
+    sortingKey: 'timestamp',
+    showAddPostModal: false}
+
+  addPostModal = (e)=>{
+    this.setState({showAddPostModal: true})
+  }
+  close=(e)=>{
+    this.setState({showAddPostModal: false})
+  }
+
   componentDidMount() {
-    const {posts, categories} = this.props
+    const {posts} = this.props
     let passedcatnamearray = this.props.passedcategories.map(x=>(x.name))
-    let localposts = posts.filter(x=>passedcatnamearray.indexOf(x.category)>-1)
-    this.setState({localposts: localposts})
+    let localposts = posts.filter(x=>passedcatnamearray.indexOf(x.category)>-1).sort(sortBy(this.state.sortingKey))
+    console.log(localposts)
+    this.setState({localposts})
   }
   render() {
-        console.log('state', this.state)
-        return (
+      return (
 
       <div className='list-posts'>
-        <h2> My Posts </h2>
         <div>
+          <br/>
+          <h4> My Posts </h4>
           <div>
-            <div>
-              {this.state.localposts.map(post => (<div key={post.id}>
-                <Post post = {post}></Post>
+            <p> Put the post sorter here </p>
+            {this.state.localposts.map(post => (<div key={post.id}>
+                <Post post = {post} commentstatus = {this.state.commentstatus}></Post>
                 </div>))}
-            </div>
           </div>
+        </div>
+        <div>
+          <p> <span> <i> Add Post </i> </span> <AddSign onClick={this.addPostModal} size={30}/> </p>
+          <CustomModal show={this.state.showAddPostModal} onHide={this.close} elementid = {shortid.generate()} close = {this.close}/>
         </div>
       </div>
     )
   }
 }
 
-function mapStateToProps ({ posts, categories }) {
+function mapStateToProps ({ posts }) {
 
   return ({
     posts: posts,
-    categories: categories
   })
 }
+const mapDispatchToProps = dispatch => ({
+  addPost: () => dispatch(addPost())
+})
 
 
-
-export default connect(mapStateToProps)(ShowPosts)
+export default connect(mapStateToProps,mapDispatchToProps)(ShowPosts)

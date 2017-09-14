@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux';
 import PostVote from './PostVote'
-import PostComment from './PostComment'
 import FaCaretDown from 'react-icons/lib/fa/caret-square-o-down';
+import '../index.css'
+import PostCard from './PostCard'
+
 
 class Post extends Component {
   static propTypes={
     post: PropTypes.object.isRequired,
   }
   state = {
-    commentstatus:false
+    detailedstatus:false
   }
   updateStatus=function(status){
-    status? this.setState({commentstatus:false}):this.setState({commentstatus:true})
+    status? this.setState({detailedstatus:false}):this.setState({detailedstatus:true})
   }
   render() {
     const { post} = this.props
@@ -23,19 +23,21 @@ class Post extends Component {
 
         <div className="card-body">
           <div className = 'row'>
-            <div className = "col-sm-7">
-              <h4 className="card-title">{post.title}</h4>
+            <div className = "col-sm-6">
+              <h5 className="card-title">{post.title}</h5>
             </div>
             <div className = "col-sm-3">
               <PostVote postid = {post.id}/>
             </div>
-            <div className = "col-sm-2">
-              <FaCaretDown onClick={(event) => this.updateStatus(this.state.commentstatus)}/>
+            <div className = "col-sm-3">
+              <FaCaretDown onClick={(event) => this.updateStatus(this.state.detailedstatus)} size={20}/>
             </div>
+
           </div>
           <div>
+
               <div className="card-text">
-                {this.state.commentstatus ? <PostComment post = {post}> </PostComment> : <p> {post.body} </p>}
+                {this.state.detailedstatus? <PostCard post={post} detailedstatus = {this.state.detailedstatus}> </PostCard> : <p></p> }
               </div>
           </div>
         </div>

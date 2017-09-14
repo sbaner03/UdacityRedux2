@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import '../index.css'
 import PropTypes from 'prop-types';
 import TiThumbsUp from 'react-icons/lib/ti/thumbs-up';
 import TiThumbsDown from 'react-icons/lib/ti/thumbs-down';
@@ -20,8 +21,8 @@ class PostVote extends Component {
     let postVote = posts.filter(x=>(x.id===this.props.postid))[0]['voteScore']
     return (
       <h5> {`Vote Score : ${postVote}`}
-        <TiThumbsUp onClick={(event) => changePostVote({postid: this.props.postid,voteaction: 'up'})}/>
-        <TiThumbsDown onClick={(event) => changePostVote({postid: this.props.postid,voteaction: 'down'})}/>
+        <TiThumbsUp onClick={(event) => changePostVote({postid: this.props.postid,voteaction: 'up'}) } size = {30}/>
+        <TiThumbsDown onClick={(event) => changePostVote({postid: this.props.postid,voteaction: 'down'})} size = {30}/>
       </h5>
     )
   }
@@ -35,7 +36,7 @@ function mapStateToProps ({ posts }) {
 };
 
 const mapDispatchToProps = dispatch => ({
-  changePostVote: (postid,action) => dispatch(changePostVote(postid,action))
+  changePostVote: (postid,voteaction) => dispatch(changePostVote(postid,voteaction))
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(PostVote)

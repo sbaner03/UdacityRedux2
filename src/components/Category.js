@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import ShowPosts from './ShowPosts'
+import {Button } from 'react-bootstrap';
+import capitalize from 'capitalize'
+
 
 
 class Category extends Component {
@@ -16,8 +18,8 @@ class Category extends Component {
     return (
 
       <div className='category'>
-        <Link className="btn btn-primary" to={`/${category.name}`}>
-          {category.name}
+        <Link className="category-link" to={`/${category.name}`}>
+          <Button bsStyle="info" bsSize = "small" block> {capitalize(category.name)} </Button>
         </Link>
       </div>
     )
