@@ -1,6 +1,4 @@
-import * as PostAPI from '../components/postsApi'
 import { combineReducers } from 'redux'
-
 import {
   ADD_POST,
   DELETE_POST,
@@ -8,46 +6,14 @@ import {
   ADD_COMMENT,
   DELETE_COMMENT,
   CHANGE_COMMENT_VOTE,
-  RECEIVE_ALL_POSTS
+  RECEIVE_ALL_POSTS,
+  RECEIVE_ALL_CATEGORIES,
+  RECEIVE_POST_COMMENTS
 } from '../actions'
 
-const initialPostState = [{'author': 'thingtwo',
-  'body': 'Everyone says so after all.',
-  'category': 'react',
-  'deleted': false,
-  'id': '8xf0y6ziyjabvozdd253nd',
-  'timestamp': 1467166872634,
-  'title': 'Udacity is the best place to learn React',
-  'voteScore': 10},
- {'author': 'thingone',
-  'body': 'Just kidding. It takes more than 10 minutes to learn technology.',
-  'category': 'redux',
-  'deleted': false,
-  'id': '6ni6ok3ym7mf1p33lnez',
-  'timestamp': 1468479767190,
-  'title': 'Learn Redux in 10 minutes!',
-  'voteScore': -5}]
-
-const initialCategoryState = [{'name': 'react', 'path': 'react'},
- {'name': 'redux', 'path': 'redux'},
- {'name': 'udacity', 'path': 'udacity'}]
-
-const initialCommentState = [{'author': 'thingtwo',
-  'body': 'Hi there! I am a COMMENT.',
-  'deleted': false,
-  'id': '894tuq4ut84ut8v4t8wun89g',
-  'parentDeleted': false,
-  'parentId': '8xf0y6ziyjabvozdd253nd',
-  'timestamp': 1468166872634,
-  'voteScore': 6},
- {'author': 'thingone',
-  'body': 'Comments. Are. Cool.',
-  'deleted': false,
-  'id': '8tu4bsun805n8un48ve89',
-  'parentDeleted': false,
-  'parentId': '8xf0y6ziyjabvozdd253nd',
-  'timestamp': 1469479767190,
-  'voteScore': -5}]
+let initialPostState = []
+let initialCategoryState = []
+let initialCommentState = []
 
 function posts (state=initialPostState, action) {
   let postid = ''
@@ -90,6 +56,8 @@ function posts (state=initialPostState, action) {
 
 function comments (state = initialCommentState, action) {
   switch (action.type) {
+    case RECEIVE_POST_COMMENTS:
+      return action.comments
     case ADD_COMMENT :
       const { parentId, author, body, category, title } = action
       let newObj = {}
@@ -122,9 +90,14 @@ function comments (state = initialCommentState, action) {
   }
 }
 
-function categories (state = initialCategoryState, action) {
-    return state
+function categories (state=initialCategoryState, action) {
+  switch (action.type) {
+    case RECEIVE_ALL_CATEGORIES:
+      return action.categories
+    default:
+      return state
   }
+}
 
 
 export default combineReducers({

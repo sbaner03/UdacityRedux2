@@ -5,7 +5,6 @@ import FaCaretDown from 'react-icons/lib/fa/caret-square-o-down';
 import '../index.css'
 import PostCard from './PostCard'
 
-
 class Post extends Component {
   static propTypes={
     post: PropTypes.object.isRequired,
@@ -17,7 +16,8 @@ class Post extends Component {
     status? this.setState({detailedstatus:false}):this.setState({detailedstatus:true})
   }
   render() {
-    const { post} = this.props
+    const post = this.props.post
+
     return (
       <div className='card'>
 
@@ -45,6 +45,5 @@ class Post extends Component {
     )
   }
 }
-
 
 export default Post;

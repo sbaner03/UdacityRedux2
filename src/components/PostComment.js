@@ -3,19 +3,20 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import '../index.css'
 import CommentCard from './CommentCard'
-
+import { fetchPostComments} from '../actions'
 
 class PostComment extends Component {
   static propTypes={
     post: PropTypes.object.isRequired
   }
-  state = {
-    localcomments: []
+
+  componentWillMount(){
+    this.props.getPostComments(this.props.post.id)
   }
 
+
   render() {
-    const comments = this.props.comments
-    let localcomments = comments.filter(x=>(x.parentId===this.props.post.id))
+    let localcomments = this.props.comments
     return (
       <div>
         <div>
@@ -32,10 +33,14 @@ class PostComment extends Component {
 }
 
 
-function mapStateToProps ({ posts, comments }) {
+function mapStateToProps ({ comments }) {
 
   return {
   comments: comments}
 };
+const mapDispatchToProps = dispatch => ({
+  getPostComments: (postid) => fetchPostComments(postid)(dispatch),
 
-export default connect(mapStateToProps)(PostComment)
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(PostComment)

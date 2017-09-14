@@ -1,45 +1,41 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { Button, FormGroup, FormControl} from 'react-bootstrap'
-//import { connect } from 'react-redux'
 import capitalize from 'capitalize'
 import shortid from 'shortid'
+import * as PostAPI from './postsApi'
 
 
 
 class CustomFormGroup extends Component{
+
   static propTypes={
     formfieldlist: PropTypes.array.isRequired,
+    newPost: PropTypes.object.isRequired,
+    category: PropTypes.string.isRequired
   }
   state = {
-    newPost: {
-      'author': null,
-      'body':null,
-      'deleted':null,
-      'id':null,
-      'timestamp':null,
-      'title':null,
-      'voteScore': null
-    }
+    postid: '',
+    res: []
   }
+
   handleChange = (e,field)=>{
-      let newObj = {}
-      let f = field['x']
-      newObj[f] = e.target.value
-      console.log(newObj,this.state.newPost)
-      this.setState({newPost: Object.assign({},this.state.newPost,newObj)})
+    this.props.newPost[field] = e.target.value
   }
 
   submitForm = (e)=>{
-    console.log(this.state.newPost)
-    // hook this up with the addPost method
+    let timestamp = 1467166872634
+    this.props.newPost['timestamp'] = timestamp
+    PostAPI.apiaddPost(this.state.postid,this.props.newPost).then(res=>{this.setState({res})})
+    console.log(this.state.res)
   }
 
   render(){
+    console.log(this.props.newPost)
     return (
       <FormGroup controlId="formEnterCategory" >
-      {this.props.formfieldlist.map(x=>(
-          <FormControl key = {shortid.generate()} type='text' defaultValue= {`${capitalize(x)} of Post`} placeholder="Enter text" onChange={event => this.handleChange(event,{x})}/>
+      {this.props.formfieldlist.map(field=>(
+          <FormControl key = {shortid.generate()} type='text' defaultValue= {`${capitalize(field)} of Post`} placeholder="Enter text" onChange={event => this.handleChange(event,field)}/>
       ))}
       <br/>
       <Button bsStyle='primary' title='form submit' id='form-submit-basic-1' onClick = {this.submitForm}> Submit </Button>
@@ -48,4 +44,5 @@ class CustomFormGroup extends Component{
     )
   }
 }
+
 export default CustomFormGroup;

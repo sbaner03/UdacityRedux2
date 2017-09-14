@@ -10,6 +10,13 @@ import CustomModal from './CustomModal'
 import shortid from 'shortid'
 
 class ShowPosts extends Component {
+//  constructor(props) {
+//     super(props)
+//     props.getAllPosts()
+//  }
+  componentWillMount(){
+    this.props.getAllPosts()
+  }
   static propTypes={
     passedcategories: PropTypes.array.isRequired
   }
@@ -26,10 +33,10 @@ class ShowPosts extends Component {
     this.setState({showAddPostModal: false})
   }
 
+
   render() {
       let passedcatnamearray = this.props.passedcategories.map(x=>(x.name))
       let localposts = this.props.posts.filter(x=>passedcatnamearray.indexOf(x.category)>-1).sort(sortBy(this.state.sortingKey))
-      console.log(localposts)
       return (
 
       <div className='list-posts'>
@@ -60,7 +67,8 @@ function mapStateToProps ({ posts }) {
 }
 const mapDispatchToProps = dispatch => ({
   addPost: () => dispatch(addPost()),
-  getAllPosts: () => fetchAllPosts()(dispatch)
+  getAllPosts: () => fetchAllPosts()(dispatch),
+
 })
 
 

@@ -16,14 +16,20 @@ class CustomModal extends Component {
   }
 
   state ={
-    catflag: false
+    category: ''
   }
   handleCatSelection = (e)=>{
-    e==='other'?this.setState({catflag:true}):this.setState({catflag:false})
+    e==='other'?this.setState({category:''}):this.setState({category:e})
   }
 
 
   render() {
+        let newPost = {
+          'author': null,
+          'title': null,
+          'body': null,
+          'category': null
+        }
         return (
 
         <div className="static-modal">
@@ -36,9 +42,7 @@ class CustomModal extends Component {
                   {this.props.categories.map(x=>(<MenuItem eventKey= {x.name} key = {shortid.generate()}> {capitalize(x.name)} </MenuItem>))}
                   <MenuItem eventKey = 'other' key={shortid.generate()}>Others</MenuItem>
               </DropdownButton>
-              { this.state.catflag? <CustomerFormGroup formfieldlist = {['category','author','body','title','voteScore']} />:
-                                    <CustomerFormGroup formfieldlist = {['author','body','title','voteScore']} />
-              }
+              {<CustomerFormGroup formfieldlist = {['author','title','body','category']} newPost ={newPost} category={this.state.category}/>}
             </Modal.Body>
             <Modal.Footer>
               <Button onClick={this.props.close}>Close</Button>

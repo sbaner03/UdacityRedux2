@@ -5,7 +5,10 @@ export const ADD_COMMENT = 'ADD_COMMENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const CHANGE_COMMENT_VOTE = 'CHANGE_COMMENT_VOTE'
 export const CHANGE_POST_VOTE = 'CHANGE_POST_VOTE'
-export const RECEIVE_ALL_POSTS = "RECEIVE_ALL_POSTS";
+export const RECEIVE_ALL_POSTS = "RECEIVE_ALL_POSTS"
+export const RECEIVE_ALL_CATEGORIES = "RECEIVE_ALL_CATEGORIES"
+export const RECEIVE_POST_COMMENTS = "RECEIVE_POST_COMMENTS"
+
 
 export function getAllPosts(posts) {
     return {
@@ -23,13 +26,19 @@ export function fetchAllPosts() {
 }
 
 
-export function addPost ({ author, body, category, title }) {
+export function addPost ({ postid, data }) {
   return {
     type: ADD_POST,
-    author,
-    body,
-    category,
-    title
+    postid,
+    data
+  }
+}
+
+export function postPost({postid,newPost}){
+  return (dispatch)=>{
+    PostsAPI.apiaddPost(postid,newPost).then((posts) =>{
+      dispatch(addPost(posts))
+    })
   }
 }
 
@@ -81,5 +90,35 @@ export function postPostVote({postid,voteaction}) {
         PostsAPI.addPostVote(postid,apivoteaction)
             .then((postid,voteaction) => {
                 dispatch(changePostVote(postid,voteaction))})
+    };
+}
+
+export function getAllCategories(categories) {
+    return {
+        type: RECEIVE_ALL_CATEGORIES,
+        categories
+    };
+}
+
+export function fetchAllCategories() {
+    return (dispatch) => {
+        PostsAPI.apigetAllCategories()
+            .then((categories) => {
+                dispatch(getAllCategories(categories))})
+    };
+}
+
+export function getPostComments(comments) {
+    return {
+        type: RECEIVE_POST_COMMENTS,
+        comments
+    };
+}
+
+export function fetchPostComments(postid) {
+    return (dispatch) => {
+        PostsAPI.apigetPostComments(postid)
+            .then((comments) => {
+                dispatch(getPostComments(comments))})
     };
 }

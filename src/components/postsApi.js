@@ -3,7 +3,7 @@ const headers = {
   'Authorization': 'test'
 }
 
-export const getAllCategories = () =>
+export const apigetAllCategories = () =>
   fetch(`${api}/categories`, { headers })
     .then(res => res.json())
     .then(data => data.categories)
@@ -23,12 +23,12 @@ export const getPost = (post_id) =>
     .then(res => res.json())
     .then(data => data)
 
-export const getPostComments = (post_id) =>
+export const apigetPostComments = (post_id) =>
   fetch(`${api}/posts/${post_id}/comments`, { headers })
     .then(res => res.json())
     .then(data => data)
 
-export const addPost = (post_id,data) =>
+export const apiaddPost = (post_id,data) =>
 fetch(`${api}/posts/${post_id}`, {
   method: 'POST',
   headers: headers,
