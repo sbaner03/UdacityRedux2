@@ -22,6 +22,12 @@ class App extends Component {
   render() {
     let categories = this.props.categories
     let catnamearray = categories.map(x=>x.name)
+    let newPost = {
+        'author':null,
+        'title':null,
+        'body':null,
+        'category':null
+      }
     return (
 
       <div className = "container-fluid">
@@ -34,8 +40,8 @@ class App extends Component {
           </div>
           <div className = "col-sm-11">
             <Switch>
-              <Route exact path="/" className = "showposts" render={({history}) => (<ShowPosts passedcategories = {categories}/>)}/>
-              {catnamearray.map(catname=>(<Route key = {catname} exact path={`/${catname}`} render={({history}) => (<ShowPosts passedcategories = {categories.filter(x=>x.name===catname)}/>)}/>))}
+              <Route exact path="/" className = "showposts" render={({history}) => (<ShowPosts passedcategories = {categories} newPost={newPost}/>)}/>
+              {catnamearray.map(catname=>(<Route key = {catname} exact path={`/${catname}`} render={({history}) => (<ShowPosts passedcategories = {categories.filter(x=>x.name===catname)} newPost={newPost}/>)}/>))}
 
             </Switch>
           </div>

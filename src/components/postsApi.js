@@ -31,16 +31,16 @@ export const apigetPostComments = (post_id) =>
     .then(res => res.json())
     .then(data => data)
 
-export const apiaddPost = (post_id,data) =>
+export const apiaddPost = (data) =>
 fetch(`${api}/posts/`, {
   method: 'POST',
   headers: headers,
-  body: JSON.stringify(data)
-})
+  body: JSON.stringify(data)}).then(res=>res)
 
 export const addPostVote = (post_id, option) =>
   fetch(`${api}/posts/${post_id}`, {
     method: 'POST',
     headers: headers,
-    body: JSON.stringify({ option: 'upVote' })
-  })
+    body: JSON.stringify({ 'option': option })})
+    .then(res=>res.json())
+    .then(data=> data)

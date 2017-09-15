@@ -8,7 +8,9 @@ import {
   CHANGE_COMMENT_VOTE,
   RECEIVE_ALL_POSTS,
   RECEIVE_ALL_CATEGORIES,
-  RECEIVE_POST_COMMENTS
+  RECEIVE_POST_COMMENTS,
+  SORT_POSTS,
+  SORT_COMMENTS
 } from '../actions'
 
 let initialPostState = []
@@ -20,9 +22,13 @@ function posts (state=initialPostState, action) {
   switch (action.type) {
     case RECEIVE_ALL_POSTS:
       return action.posts
-    case ADD_POST : // return array not object
-      const newPost = action
-      return [...state].push(newPost)
+    case ADD_POST:
+      let newPost = action.newPost
+      let posts = [...state]
+      posts.push(newPost)
+      return posts
+    case SORT_POSTS:
+      return action.posts
     case DELETE_POST:
       postid = action.postid
       state[postid]['deleted'] = true
@@ -50,6 +56,9 @@ function comments (state = initialCommentState, action) {
   switch (action.type) {
     case RECEIVE_POST_COMMENTS:
       return action.comments
+    case SORT_COMMENTS:
+      return action.comments
+
     case ADD_COMMENT :
       const { parentId, author, body, category, title } = action
       let newObj = {}
