@@ -5,6 +5,7 @@
   "dependencies": {
     "bootstrap": "^3.3.7",
     "capitalize": "^1.0.0",
+    "lodash": "^4.17.4",
     "node-datetime": "^2.0.3",
     "react": "^15.6.1",
     "react-bootstrap": "^0.31.3",

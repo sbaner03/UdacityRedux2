@@ -47,7 +47,7 @@ class ShowPosts extends Component {
 
   render() {
       let passedcatnamearray = this.props.passedcategories.map(x=>(x.name))
-      let localposts = this.props.posts.filter(x=>passedcatnamearray.indexOf(x.category)>-1)
+      let localposts = this.props.posts.filter(x=> passedcatnamearray.indexOf(x.category)>-1 && x.deleted === false)
       return (
 
       <div className='list-posts'>
@@ -56,7 +56,7 @@ class ShowPosts extends Component {
           <h4> My Posts </h4>
           <div>
             <DropdownButton bsStyle='primary' title='Sort Posts' id='dropdown-basic-1' onSelect = {this.sortPostsBy}>
-              <MenuItem eventKey='voteScore' key = {shortid.generate()}> Vote Score </MenuItem>
+              <MenuItem eventKey='voteScore' key = {shortid.generate()}> Votes </MenuItem>
               <MenuItem eventKey='timestamp' key = {shortid.generate()}> Time Stamp </MenuItem>
             </DropdownButton>
             {localposts.map(post => (<div key = {shortid.generate()}>

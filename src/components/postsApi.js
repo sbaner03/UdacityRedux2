@@ -50,8 +50,30 @@ export const addPostVote = (post_id, option) =>
     headers: headers,
     body: JSON.stringify(option)}).then(res=>res)
 
+export const addCommentVote = (comment_id, option) =>
+  fetch(`${api}/comments/${comment_id}`, {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(option)}).then(res=>res)
+
+export const apieditComment = (comment_id,data) =>
+  fetch(`${api}/comments/${comment_id}`, {
+    method: 'PUT',
+    headers: headers,
+    body: JSON.stringify(data)}).then(res=>res)
+
 export const apieditPost = (post_id, data) =>
   fetch(`${api}/posts/${post_id}`, {
     method: 'PUT',
     headers: headers,
     body: JSON.stringify(data)}).then(res=>res)
+
+export const apideletePost = (post_id) =>
+  fetch(`${api}/posts/${post_id}`, {
+    method: 'DELETE',
+    headers: headers}).then(res=>res)
+
+export const apideleteComment = (comments_id) =>
+  fetch(`${api}/comments/${comments_id}`, {
+    method: 'DELETE',
+    headers: headers}).then(res=>res)
