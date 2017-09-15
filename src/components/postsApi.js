@@ -37,10 +37,21 @@ fetch(`${api}/posts/`, {
   headers: headers,
   body: JSON.stringify(data)}).then(res=>res)
 
+export const apiaddComment = (data) =>
+  fetch(`${api}/comments/`, {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(data)}).then(res=>res)
+
+
 export const addPostVote = (post_id, option) =>
   fetch(`${api}/posts/${post_id}`, {
     method: 'POST',
     headers: headers,
-    body: JSON.stringify({ 'option': option })})
-    .then(res=>res.json())
-    .then(data=> data)
+    body: JSON.stringify(option)}).then(res=>res)
+
+export const apieditPost = (post_id, data) =>
+  fetch(`${api}/posts/${post_id}`, {
+    method: 'PUT',
+    headers: headers,
+    body: JSON.stringify(data)}).then(res=>res)

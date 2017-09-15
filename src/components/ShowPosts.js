@@ -4,10 +4,12 @@ import PropTypes from 'prop-types'
 import Post from './Post'
 import { connect } from 'react-redux'
 import AddSign from 'react-icons/lib/md/add-circle';
-import { addPost, fetchAllPosts, fetchPostComments, sortAllPosts} from '../actions';
-import shortid from 'shortid'
+import { postPost, fetchAllPosts, fetchPostComments, sortAllPosts} from '../actions';
 import { DropdownButton, MenuItem,Modal,Button, FormGroup, FormControl} from 'react-bootstrap'
 import capitalize from 'capitalize'
+import shortid from 'shortid'
+
+
 
 class ShowPosts extends Component {
   componentWillMount(){
@@ -21,6 +23,10 @@ class ShowPosts extends Component {
     showAddPostModal: false,
     formfieldlist: ['author','title','body','category']
     }
+  sortPostsBy = (e)=>{
+      console.log('event',e)
+      this.props.sortPosts(e,this.props.posts)
+    }
 
   addPostModal = (e)=>{
     this.setState({showAddPostModal: true})
@@ -28,11 +34,9 @@ class ShowPosts extends Component {
   close=(e)=>{
     this.setState({showAddPostModal: false})
   }
-  sortPostsBy = (e)=>{
-    console.log('event',e)
-    this.props.sortPosts(e,this.props.posts)
-  }
+
   submitForm = (e)=>{
+    this.props.newPost['id'] = shortid.generate()
     this.props.newPost['timestamp'] = Date.now()
     this.props.addPostprop(this.props.newPost)
   }
@@ -51,12 +55,12 @@ class ShowPosts extends Component {
           <br/>
           <h4> My Posts </h4>
           <div>
-            <DropdownButton bsStyle='primary' title='SortBy' id='dropdown-basic-1' onSelect = {this.sortPostsBy}>
+            <DropdownButton bsStyle='primary' title='Sort Posts' id='dropdown-basic-1' onSelect = {this.sortPostsBy}>
               <MenuItem eventKey='voteScore' key = {shortid.generate()}> Vote Score </MenuItem>
               <MenuItem eventKey='timestamp' key = {shortid.generate()}> Time Stamp </MenuItem>
             </DropdownButton>
-            {localposts.map(post => (<div key={post.id}>
-                <Post post = {post} commentstatus = {this.state.commentstatus}></Post>
+            {localposts.map(post => (<div key = {shortid.generate()}>
+                <Post post = {post} newdata = {{'title': null,'body': null}}></Post>
                 </div>))}
           </div>
         </div>
@@ -100,7 +104,7 @@ function mapStateToProps ({ posts,categories }) {
   })
 }
 const mapDispatchToProps = dispatch => ({
-  addPostprop: (post) => dispatch(addPost(post)),
+  addPostprop: (post) => postPost(post)(dispatch),
   getAllPosts: () => fetchAllPosts()(dispatch),
   getPostComments: (postid) => fetchPostComments(postid)(dispatch),
   sortPosts: (key,posts)=> sortAllPosts(key,posts)(dispatch)

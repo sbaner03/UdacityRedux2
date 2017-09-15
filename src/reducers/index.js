@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux'
+import sortBy from 'sort-by'
 import {
   ADD_POST,
   DELETE_POST,
@@ -10,7 +11,8 @@ import {
   RECEIVE_ALL_CATEGORIES,
   RECEIVE_POST_COMMENTS,
   SORT_POSTS,
-  SORT_COMMENTS
+  SORT_COMMENTS,
+  EDIT_POST
 } from '../actions'
 
 let initialPostState = []
@@ -18,35 +20,33 @@ let initialCategoryState = []
 let initialCommentState = []
 
 function posts (state=initialPostState, action) {
-  let postid = ''
+  let posts = []
   switch (action.type) {
     case RECEIVE_ALL_POSTS:
       return action.posts
     case ADD_POST:
       let newPost = action.newPost
-      let posts = [...state]
+      posts = [...state]
       posts.push(newPost)
       return posts
     case SORT_POSTS:
-      return action.posts
+      posts = action.posts
+      let sortedposts = posts.sort(sortBy(action.key))
+      return sortedposts
     case DELETE_POST:
-      postid = action.postid
-      state[postid]['deleted'] = true
-      return [...state]
-
+      let delposts = [...state].filter(x=>x.id!== action.delPost.id)
+      return delposts
     case CHANGE_POST_VOTE:
-      postid = action.postid
-      let voteaction =action.voteaction
-      let targetpost = state.filter(x=>x.id===postid)
-      let idx = state.indexOf(targetpost[0])
-      let voteScore = targetpost[0].voteScore
-      if (voteaction==='up'){
-          voteScore+=1
-      } else{
-        voteScore-=1
-      }
-      state[idx]['voteScore'] = voteScore
-      return [...state]
+      let voteposts = [...state]
+      let ix = voteposts.indexOf(action.newPost)
+      voteposts[ix]['voteScore'] = action.newPost.voteScore
+      return voteposts
+    case EDIT_POST:
+      posts = [...state]
+      ix = posts.indexOf(action.oldPost)
+      posts[ix] = action.newPost
+      console.log(action.newPost)
+      return posts
     default :
       return state
   }
@@ -60,18 +60,11 @@ function comments (state = initialCommentState, action) {
       return action.comments
 
     case ADD_COMMENT :
-      const { parentId, author, body, category, title } = action
-      let newObj = {}
-      newObj['parentId'] = parentId
-      newObj['author'] = author
-      newObj['body'] = body
-      newObj['category'] = category
-      newObj['title'] = title
-      newObj['id'] = 'testingID'
-      newObj['timestamp'] = 'testingtimeStamp'
-      return {
-        ...state,newObj,
-      }
+      let newComment = action.newComment
+      let comments = [...state]
+      comments.push(newComment)
+      return comments
+
     case DELETE_COMMENT:
       const commentid = action.commentid
       state[commentid]['deleted'] = true

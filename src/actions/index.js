@@ -2,39 +2,36 @@ import * as PostsAPI from '../components/postsApi'
 import sortBy from 'sort-by'
 export const ADD_POST = 'ADD_POST'
 export const DELETE_POST = 'DELETE_POST'
-export const ADD_COMMENT = 'ADD_COMMENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const CHANGE_COMMENT_VOTE = 'CHANGE_COMMENT_VOTE'
-export const CHANGE_POST_VOTE = 'CHANGE_POST_VOTE'
 export const RECEIVE_ALL_POSTS = "RECEIVE_ALL_POSTS"
 export const RECEIVE_ALL_CATEGORIES = "RECEIVE_ALL_CATEGORIES"
 export const RECEIVE_POST_COMMENTS = "RECEIVE_POST_COMMENTS"
 export const SORT_POSTS = "SORT_POSTS"
 export const SORT_COMMENTS='SORT_COMMENTS'
+export const ADD_COMMENT='ADD_COMMENT'
+export const CHANGE_POST_VOTE='CHANGE_POST_VOTE'
+export const EDIT_POST='EDIT_POST'
 
 
-export function sortPosts(posts) {
+export function sortPosts(key,posts) {
     return {
         type: SORT_POSTS,
-        posts
+        key: key,
+        posts: posts
     };
 }
-
 export function sortAllPosts(key,posts) {
     return (dispatch) => {
-      dispatch(sortPosts(posts.sort(sortBy(key))))
+      dispatch(sortPosts(key,posts))
     };
 }
-
-
-
 export function getAllPosts(posts) {
     return {
         type: RECEIVE_ALL_POSTS,
         posts
     };
 }
-
 export function fetchAllPosts() {
     return (dispatch) => {
         PostsAPI.apigetAllPosts()
@@ -42,22 +39,67 @@ export function fetchAllPosts() {
                 dispatch(getAllPosts(posts))})
     };
 }
-
-
 export function addPost (newPost) {
   return {
     type: ADD_POST,
     newPost: newPost
   }
 }
-
 export function postPost(newPost){
   return (dispatch) => {
       PostsAPI.apiaddPost(newPost)
       dispatch(addPost(newPost))
   }
 }
+export function changePostVote (newPost) {
+  return {
+    type: CHANGE_POST_VOTE,
+    newPost: newPost
+  }
+}
+export function postPostVote(post,option){
+  let newPost = post
+  let voteScore = post['voteScore']
+  let newScore = option['option']==='upVote' ? voteScore+1 : voteScore-1
+  newPost['voteScore'] = newScore
+  return (dispatch) => {
+      PostsAPI.addPostVote(post.id,option)
+      dispatch(changePostVote(newPost))
+  }
+}
 
+export function addComment (newComment) {
+  return {
+    type: ADD_COMMENT,
+    newComment: newComment
+  }
+}
+
+export function postComment(newComment){
+  return (dispatch) => {
+      PostsAPI.apiaddComment(newComment)
+      dispatch(addComment(newComment))
+  }
+}
+
+export function editPost(newPost,oldPost) {
+    return {
+        type: EDIT_POST,
+        newPost: newPost,
+        oldPost: oldPost
+    };
+}
+export function puteditPost(post,newdata) {
+    let newPost = post
+    newPost['title'] = newdata['title'] === null ? post['title']: newdata['title']
+    newPost['body'] = newdata['body'] === null ? post['body']: newdata['body']
+    newdata['title'] = newdata['title'] === null ? post['title']: newdata['title']
+    newdata['body'] = newdata['body'] === null ? post['body']: newdata['body']
+    return (dispatch) => {
+      PostsAPI.apieditPost(post.id,newdata)
+      dispatch(editPost(newPost,post))
+    };
+}
 
 export function delPost ({ postid}) {
   return {
@@ -80,17 +122,6 @@ export function sortAllComments(key,comments) {
     };
 }
 
-export function addComment ({ parentId, author, body, category, title }) {
-  return {
-    type: ADD_COMMENT,
-    parentId,
-    author,
-    body,
-    category,
-    title
-  }
-}
-
 
 export function delComment ({ commentid}) {
   return {
@@ -106,22 +137,6 @@ export function changeCommentVote ({ id,voteaction}) {
   }
 }
 
-export function changePostVote ({ postid,voteaction}) {
-  return {
-    type: CHANGE_POST_VOTE,
-    postid,
-    voteaction
-  }
-}
-
-export function postPostVote({postid,voteaction}) {
-    return (dispatch) => {
-        let apivoteaction = voteaction === 'up'?'upVote':'downVote'
-        PostsAPI.addPostVote(postid,apivoteaction)
-            .then((postid,voteaction) => {
-                dispatch(changePostVote(postid,voteaction))})
-    };
-}
 
 export function getAllCategories(categories) {
     return {
