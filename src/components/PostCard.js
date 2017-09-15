@@ -68,7 +68,7 @@ class PostCard extends Component {
   submitEditForm = (e,comment)=>{
     let newComment = {}
     newComment['timestamp'] = Date.now()
-    newComment['body'] = this.props.newComment
+    newComment['body'] = this.props.newComment['body']
     this.props.puteditCommentprop(comment,newComment)
   }
   handleEditChange = (e,field)=>{
@@ -81,6 +81,7 @@ class PostCard extends Component {
     const post = this.props.post
     const postcomments = this.props.comments.filter(x=>(x.parentId===post.id && x.deleted===false))
     let postheader = `Post Category: ${capitalize(post.category)} Posted on: ${post.timestamp}`
+    console.log(postcomments)
     return (
       <div>
         {postcomments.length<=0?<p></p>:
@@ -97,6 +98,26 @@ class PostCard extends Component {
             <div>
               <h5> 'No Comments for this Post' </h5>
               <AddSign onClick={this.addCommentModal} size={20}/>
+              <Modal show={this.state.showAddCommentModal} onHide={this.closeAddModal} key = {shortid.generate()}>
+                <div>
+                    <Modal.Header closeButton>
+                      <Modal.Title>Add Comment</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      <FormGroup controlId="formEnterComment" >
+                        {this.state.addformfieldlist.map(field=>(
+                            <FormControl key = {shortid.generate()} type='text' defaultValue= {`Comment ${field}`} placeholder="Enter text" onChange={event => this.handleAddChange(event,field)}/>
+                        ))}
+                        <br/>
+                        <Button bsStyle='primary' title='form submit' id='form-submit-basic-1' onClick = {event=>this.submitAddForm(event,post.id)}> Submit Changes </Button>
+                      </FormGroup>
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <Button onClick={this.closeAddModal}>Close</Button>
+                    </Modal.Footer>
+                </div>
+              </Modal>
+
             </div>:
           <div>
             {postcomments.map(comment=>(
