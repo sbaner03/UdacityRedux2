@@ -8,7 +8,7 @@ class CommentCard extends Component {
     comment: PropTypes.object.isRequired
   }
 
-  render() {  
+  render() {
     return (
       <div>
         <Panel header={`Comment posted on ${this.props.comment.timestamp}`} bsStyle="info">

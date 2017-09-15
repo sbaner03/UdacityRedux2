@@ -1,6 +1,9 @@
 const api = "http://localhost:5001"
+const token = 'anything'
 const headers = {
-  'Authorization': 'test'
+  'Accept': 'application/json',
+  'Authorization': token,
+  'Content-Type': 'application/json'
 }
 
 export const apigetAllCategories = () =>
@@ -29,7 +32,7 @@ export const apigetPostComments = (post_id) =>
     .then(data => data)
 
 export const apiaddPost = (post_id,data) =>
-fetch(`${api}/posts/${post_id}`, {
+fetch(`${api}/posts/`, {
   method: 'POST',
   headers: headers,
   body: JSON.stringify(data)

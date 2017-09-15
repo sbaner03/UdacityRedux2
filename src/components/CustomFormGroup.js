@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import { Button, FormGroup, FormControl} from 'react-bootstrap'
 import capitalize from 'capitalize'
 import shortid from 'shortid'
-import * as PostAPI from './postsApi'
+import {postPost} from '../actions'
+import {connect} from 'react-redux'
 
 
 
@@ -24,10 +25,9 @@ class CustomFormGroup extends Component{
   }
 
   submitForm = (e)=>{
-    let timestamp = 1467166872634
-    this.props.newPost['timestamp'] = timestamp
-    PostAPI.apiaddPost(this.state.postid,this.props.newPost).then(res=>{this.setState({res})})
-    console.log(this.state.res)
+    this.props.newPost['timestamp'] = Date.now()
+    console.log(this.props.newPost)
+    this.props.addPost(this.props.newPost)
   }
 
   render(){
@@ -45,4 +45,15 @@ class CustomFormGroup extends Component{
   }
 }
 
-export default CustomFormGroup;
+function mapStateToProps ({ posts }) {
+
+  return ({
+    posts: posts,
+  })
+}
+const mapDispatchToProps = dispatch => ({
+  addPost: (newPost) => dispatch(postPost(newPost))
+})
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(CustomFormGroup)

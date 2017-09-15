@@ -16,7 +16,6 @@ class PostComment extends Component {
           <br/>
           {this.props.postcomments.length===0? <h5> 'No Comments for this Post' </h5>:
           <div>
-            <p> Put the comment sorter here </p>
             {this.props.postcomments.map(x=>(<CommentCard key = {x.id} comment = {x}> </CommentCard>))}
           </div>}
         </div>

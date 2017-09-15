@@ -21,16 +21,8 @@ function posts (state=initialPostState, action) {
     case RECEIVE_ALL_POSTS:
       return action.posts
     case ADD_POST : // return array not object
-      const { author,body,category,title } = action
-      let newObj = {}
-      newObj['author'] = author
-      newObj['body'] = body
-      newObj['category'] = category
-      newObj['title'] = title
-      newObj['id'] = 'testingID'
-      newObj['timestamp'] = 'testingtimeStamp'
-      let newState  = [...state].push(newObj)
-      return newState
+      const newPost = action
+      return [...state].push(newPost)
     case DELETE_POST:
       postid = action.postid
       state[postid]['deleted'] = true

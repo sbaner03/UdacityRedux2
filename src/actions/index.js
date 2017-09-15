@@ -26,18 +26,17 @@ export function fetchAllPosts() {
 }
 
 
-export function addPost ({ postid, data }) {
+export function addPost (newPost) {
   return {
     type: ADD_POST,
-    postid,
-    data
+    newPost
   }
 }
 
-export function postPost({postid,newPost}){
+export function postPost(newPost){
   return (dispatch)=>{
-    PostsAPI.apiaddPost(postid,newPost).then((posts) =>{
-      dispatch(addPost(posts))
+    PostsAPI.apiaddPost(newPost).then((posts) =>{
+      dispatch(addPost(newPost))
     })
   }
 }
