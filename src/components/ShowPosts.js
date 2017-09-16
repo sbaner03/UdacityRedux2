@@ -1,3 +1,8 @@
+// This is the ShowPosts component - this is the parent component for all the post related information
+// Functionality in this component includes actions that are not related to an indivual post:
+//  - Sort posts based on dropdown selection of sorting criteria
+//  - Enter a new post using a Modal
+// Post specific actions are delegated to the Post component which is passed the specific post as prop
 import React, { Component } from 'react';
 import '../index.css'
 import PropTypes from 'prop-types'
@@ -8,42 +13,63 @@ import { postPost, fetchAllPosts, fetchPostComments, sortAllPosts} from '../acti
 import { DropdownButton, MenuItem,Modal,Button, FormGroup, FormControl} from 'react-bootstrap'
 import capitalize from 'capitalize'
 import shortid from 'shortid'
-
-
-
+// componentWillMount invokes the getAllPosts which in turn is linked to the action creator fetchAllPosts
+// fetchAllPosts has an async API call which once resolved dispatches
+// an action (RECEIVE_ALL_POSTS from the action creator getAllPosts - please refer to ../action/index.js)
+// to initialize the store with all the posts retrived from the api.
+// The action creator method fetchAllPosts is made available in this component through mapDispatchToProps via connect()
+// A similar template is used for postPost, fetchPostComments, sortAllPosts for being made accessible in this component
 class ShowPosts extends Component {
   componentWillMount(){
     this.props.getAllPosts()
   }
+// passedcategories is passed from App - array that contains the categories which ShowPosts needs to render
+// newPost is an object that is used as 'placeholder' for the fields of the newPost
   static propTypes={
     passedcategories: PropTypes.array.isRequired,
     newPost: PropTypes.object.isRequired
   }
+// local state is used for for opening closing the Modal (showAddPostModal) and
+// formfieldlist which is used in the modal to automatically generate the form for data entry
+// In real world applications, formfieldlist can be retrived from a database making the entire form rendering
+// and data capture dynamic
   state = {
     showAddPostModal: false,
     formfieldlist: ['author','title','body','category']
     }
+// method to sort posts based on the selection of the DropdownButton component
   sortPostsBy = (e)=>{
-      console.log('event',e)
       this.props.sortPosts(e,this.props.posts)
     }
-
+// method to open the Modal based on setting the state from input from the AddSign component
   addPostModal = (e)=>{
     this.setState({showAddPostModal: true})
   }
+// method to close the Modal based on setting the state
   close=(e)=>{
     this.setState({showAddPostModal: false})
   }
-
+// submit the data for a newPost based on data entered into the prop newPost. Each of the fields of
+// the prop newPost is entered through the handle method associated with each FormControl component
+// generated for each field in formfieldlist. This generates the form dynamically and also captures the user
+// input of each form field by mapping them to newPost. In submitForm the last step is to use the
+// addPostprop method to submit the data for a newPost to the API (via postPost action creator)
+// Form validation can also be built into this method
   submitForm = (e)=>{
     this.props.newPost['id'] = shortid.generate()
     this.props.newPost['timestamp'] = Date.now()
     this.props.addPostprop(this.props.newPost)
   }
+// handleChange method is generated for each of the fields in formfieldlist and is accessed through
+// each of the FormControl components created. Each field is mapped back as a key of the newPost object
+// and therefore entered independently as a user enters data into the text box
   handleChange = (e,field)=>{
     this.props.newPost[field] = e.target.value
   }
-
+// 3 critical components being rendered:
+// a) DropdownButton component for sorting
+// b) AddSign component to open the Modal component
+// c) Modal component which presents the form for the new post data entry
 
   render() {
       let passedcatnamearray = this.props.passedcategories.map(x=>(x.name))
@@ -104,11 +130,10 @@ function mapStateToProps ({ posts,categories }) {
   })
 }
 const mapDispatchToProps = dispatch => ({
-  addPostprop: (post) => postPost(post)(dispatch),
-  getAllPosts: () => fetchAllPosts()(dispatch),
-  getPostComments: (postid) => fetchPostComments(postid)(dispatch),
-  sortPosts: (key,posts)=> sortAllPosts(key,posts)(dispatch)
+  addPostprop: (post) => postPost(post)(dispatch), // add new post
+  getAllPosts: () => fetchAllPosts()(dispatch), // get all posts
+  getPostComments: (postid) => fetchPostComments(postid)(dispatch), // get all comments of a post
+  sortPosts: (key,posts)=> sortAllPosts(key,posts)(dispatch) // sort posts based on key selected
 })
-
 
 export default connect(mapStateToProps,mapDispatchToProps)(ShowPosts)

@@ -1,3 +1,11 @@
+// This is the PostCard component - this is the component for all the information and actions for comments of a given post
+// and also responsible for rendering the post data
+// Functionality in this component includes actions that are related to comments an indivual post:
+//  - Sort comments in a post
+//  - Vote on a comment
+//  - Add a new comment
+//  - Edit the fields of a comment
+//  - Delete a comment
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
@@ -10,27 +18,32 @@ import TiThumbsDown from 'react-icons/lib/ti/thumbs-down';
 import FaClose from 'react-icons/lib/fa/close'
 import FaEdit from 'react-icons/lib/fa/edit'
 import AddSign from 'react-icons/lib/md/add-circle';
-
+// Props passed includes the post and newComment. newComment is an object with all the fields of a
+// comment which is the structure that holds all the data entered into the fields of the modal
 class PostCard extends Component {
   static propTypes={
     post: PropTypes.object.isRequired,
     newComment: PropTypes.object.isRequired
   }
-
   sortCommentsBy=(e)=>{
     this.props.sortComments(e,this.props.comments)
   }
-
+// componentWillMount invokes the getPostComments which in turn is linked to the action creator fetchPostComments.
+// This results in the redux store being populated with the comments of a given post. Similar structure componentWillMount in Post
   componentWillMount(){
     this.props.getPostComments(this.props.post.id)
   }
+// Local state includes fields for local display and form data capture.
+// showAddCommentModal and  showEditCommentModal are flags which are set to true or false open and close the respective Modals
+// addformfieldlist fields of a new comment which can be entered
+// editformfieldlist fields of an existing comment which can be entered for editing
   state = {
     showAddCommentModal: false,
     showEditCommentModal: false,
     addformfieldlist: ['author','body'],
     editformfieldlist: ['body']
     }
-
+// addCommentModal, editCommentModal, closeAddModal methods for Modal operation
   addCommentModal = (e)=>{
     this.setState({showAddCommentModal: true})
   }
@@ -40,7 +53,8 @@ class PostCard extends Component {
   closeAddModal=(e)=>{
     this.setState({showAddCommentModal: false})
   }
-
+// submitAddForm and handleAddChange methods are used to collect and submit the form in the Modal component
+// similar to the submitForm and handleChange methods in Post
   submitAddForm = (e,postid)=>{
     let newComment = this.props.newComment
     newComment['id'] = shortid.generate()
@@ -51,20 +65,21 @@ class PostCard extends Component {
   handleAddChange = (e,field)=>{
     this.props.newComment[field] = e.target.value
   }
+// changeVote to Vote on a comment - similar to changeVote in Post
   changeVote = (e,voteaction,comment)=>{
     let optionval = voteaction==='up'?'upVote': 'downVote'
     let option = {'option':optionval}
     this.props.changeCommentVoteprop (comment,option)
   }
+// deleteComment to delete a comment - similar to deletePost in Post
   deleteComment = (e,comment)=>{
     this.props.deleteCommentprop(comment)
   }
 
-  //
+// mirror modal operations, handle data and submit for edit operation
   closeEditModal=(e)=>{
     this.setState({showEditCommentModal: false})
   }
-
   submitEditForm = (e,comment)=>{
     let newComment = {}
     newComment['timestamp'] = Date.now()
@@ -74,9 +89,13 @@ class PostCard extends Component {
   handleEditChange = (e,field)=>{
     this.props.newComment[field] = e.target.value
   }
-
-
-
+// 3 critical components being rendered:
+// a) DropdownButton component to sort comments within a post
+// b) Panel to display post data. Also the child components of Panel are
+  // b1) AddSign and FaEdit to trigger Modal operations
+  // b2) Modals for adding a new comment and editing existing comment
+  // b3) TiThumbsUp and TiThumbsDown for voting on a component
+  // b4) FaClose to delete a comment
   render() {
     const post = this.props.post
     const postcomments = this.props.comments.filter(x=>(x.parentId===post.id && x.deleted===false))
@@ -189,12 +208,12 @@ function mapStateToProps ({comments}) {
 }
 
 const mapDispatchToProps = dispatch => ({
-  getPostComments: (postid) => fetchPostComments(postid)(dispatch),
-  sortComments: (key,comments)=> sortAllComments(key,comments)(dispatch),
-  addCommentprop: (comment) => postComment(comment)(dispatch),
-  changeCommentVoteprop: (comment,option) => postCommentVote(comment,option)(dispatch),
-  puteditCommentprop: (comment,newdata) => puteditComment(comment,newdata)(dispatch),
-  deleteCommentprop: (comment)=> deleteComment(comment)(dispatch)
+  getPostComments: (postid) => fetchPostComments(postid)(dispatch), // pass the postid to get comments
+  sortComments: (key,comments)=> sortAllComments(key,comments)(dispatch), // pass the key and comments for sorting comments
+  addCommentprop: (comment) => postComment(comment)(dispatch), // pass the new comment data
+  changeCommentVoteprop: (comment,option) => postCommentVote(comment,option)(dispatch), // pass the comment and vote option data
+  puteditCommentprop: (comment,newdata) => puteditComment(comment,newdata)(dispatch), // pass the comment and edited data
+  deleteCommentprop: (comment)=> deleteComment(comment)(dispatch) // pass the comment to be deleted
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(PostCard)
