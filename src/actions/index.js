@@ -64,16 +64,17 @@ export function fetchAllPosts() {
                 dispatch(getAllPosts(posts))})
     };
 }
-export function addPost (newPost) {
+export function addPost (newPost,status) {
   return {
     type: ADD_POST,
-    newPost: newPost
+    newPost: newPost,
+    status:status
   }
 }
 export function postPost(newPost){
   return (dispatch) => {
       PostsAPI.apiaddPost(newPost)
-      dispatch(addPost(newPost))
+      .then(res=>dispatch(addPost(newPost,res.status)))
   }
 }
 export function changePostVote (newPost) {
@@ -108,23 +109,25 @@ export function postCommentVote(comment,option){
       dispatch(changeCommentVote(newComment))
   }
 }
-export function addComment (newComment) {
+export function addComment (newComment,status) {
   return {
     type: ADD_COMMENT,
-    newComment: newComment
+    newComment: newComment,
+    status:status
   }
 }
 export function postComment(newComment){
   return (dispatch) => {
       PostsAPI.apiaddComment(newComment)
-      dispatch(addComment(newComment))
+      .then(res=>dispatch(addComment(newComment,res.status)))
   }
 }
-export function editPost(newPost,oldPost) {
+export function editPost(newPost,oldPost,status) {
     return {
         type: EDIT_POST,
         newPost: newPost,
-        oldPost: oldPost
+        oldPost: oldPost,
+        status:status
     };
 }
 export function puteditPost(post,newdata) {
@@ -135,14 +138,15 @@ export function puteditPost(post,newdata) {
     newPost['body'] = newdata['body']
     return (dispatch) => {
       PostsAPI.apieditPost(post.id,newdata)
-      dispatch(editPost(newPost,post))
+      .then(res=>dispatch(editPost(newPost,post,res.status)))
     };
 }
-export function editComment(newComment,oldComment) {
+export function editComment(newComment,oldComment,status) {
     return {
         type: EDIT_COMMENT,
         newComment: newComment,
-        oldComment: oldComment
+        oldComment: oldComment,
+        status:status
     };
 }
 export function puteditComment(comment,newdata) {
@@ -152,7 +156,7 @@ export function puteditComment(comment,newdata) {
     newComment['timestamp'] = newdata['timestamp']
     return (dispatch) => {
       PostsAPI.apieditComment(comment.id,newdata)
-      dispatch(editComment(newComment,comment))
+      .then(res=>dispatch(editComment(newComment,comment,res.status)))
     };
 }
 export function delPost (delpost) {

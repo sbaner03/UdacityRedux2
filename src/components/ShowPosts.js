@@ -10,7 +10,7 @@ import Post from './Post'
 import { connect } from 'react-redux'
 import AddSign from 'react-icons/lib/md/add-circle';
 import { postPost, fetchAllPosts, fetchPostComments, sortAllPosts} from '../actions';
-import { DropdownButton, MenuItem,Modal,Button, FormGroup, FormControl} from 'react-bootstrap'
+import { DropdownButton, MenuItem,Modal,Button, FormGroup, FormControl,Alert } from 'react-bootstrap'
 import capitalize from 'capitalize'
 import shortid from 'shortid'
 // componentWillMount invokes the getAllPosts which in turn is linked to the action creator fetchAllPosts
@@ -35,7 +35,7 @@ class ShowPosts extends Component {
 // and data capture dynamic
   state = {
     showAddPostModal: false,
-    formfieldlist: ['author','title','body','category']
+    formfieldlist: ['author','title','body'],
     }
 // method to sort posts based on the selection of the DropdownButton component
   sortPostsBy = (e)=>{
@@ -66,11 +66,17 @@ class ShowPosts extends Component {
   handleChange = (e,field)=>{
     this.props.newPost[field] = e.target.value
   }
+// handleCatSelection method is used to specifically assign the value of the selected category
+// an alert is used to inform the user of her choice of category
+  handleCatSelection=(e)=>{
+    this.props.newPost['category'] = e
+    alert(`You wish to add a post to ${capitalize(e)} category`)
+  }
+
 // 3 critical components being rendered:
 // a) DropdownButton component for sorting
 // b) AddSign component to open the Modal component
 // c) Modal component which presents the form for the new post data entry
-
   render() {
       let passedcatnamearray = this.props.passedcategories.map(x=>(x.name))
       let localposts = this.props.posts.filter(x=> passedcatnamearray.indexOf(x.category)>-1 && x.deleted === false)
@@ -100,8 +106,10 @@ class ShowPosts extends Component {
                 <Modal.Body>
                   <DropdownButton bsStyle='primary' title='Select Category' id='dropdown-basic-1' onSelect = {this.handleCatSelection}>
                       {this.props.categories.map(x=>(<MenuItem eventKey= {x.name} key = {shortid.generate()}> {capitalize(x.name)} </MenuItem>))}
-                      <MenuItem eventKey = 'other' key={shortid.generate()}>Others</MenuItem>
                   </DropdownButton>
+                  <Alert bsStyle="warning">
+                    <p> <strong>{this.props.newPost['category']}</strong> </p>
+                  </Alert>
                   <FormGroup controlId="formEnterCategory" >
                     {this.state.formfieldlist.map(field=>(
                         <FormControl key = {shortid.generate()} type='text' defaultValue= {`${capitalize(field)} of Post`} placeholder="Enter text" onChange={event => this.handleChange(event,field)}/>

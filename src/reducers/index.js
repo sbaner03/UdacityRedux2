@@ -32,8 +32,10 @@ function posts (state=initialPostState, action) {
     case ADD_POST:
       let newPost = action.newPost
       posts = [...state]
-      posts.push(newPost)
-      return posts // return posts with the newPost added to the post array. this keeps the API database and store in sync
+      if (action.status === 200){
+          posts.push(newPost)
+      }
+      return posts // return posts with the newPost added to the post array. this updates the store only if the status of the API is 200 (which means successful)
     case SORT_POSTS:
       posts = action.posts
       let sortedposts = _.cloneDeep(posts.sort(sortBy(action.key)))
@@ -48,9 +50,11 @@ function posts (state=initialPostState, action) {
       return voteposts // return posts with ammended voteScore on the given post. this keeps the API database and store in sync
     case EDIT_POST:
       posts = [...state]
-      ix = posts.indexOf(action.oldPost)
-      posts[ix] = action.newPost
-      return posts // return posts with ammended data on the given post. this keeps the API database and store in sync
+      if (action.status === 200){
+        ix = posts.indexOf(action.oldPost)
+        posts[ix] = action.newPost
+      }
+      return posts // return posts with ammended data on the given post. this updates the store only if the status of the API is 200 (which means successful)
     default :
       return state
   }
@@ -66,8 +70,11 @@ function comments (state = initialCommentState, action) {
     case ADD_COMMENT :
       let newComment = action.newComment
       let comments = [...state]
-      comments.push(newComment)
-      return comments // return comments with the newPost added to the comments array. this keeps the API database and store in sync
+      console.log('status', action.status)
+      if (action.status===200){
+        comments.push(newComment)
+      }
+      return comments // return comments with the newPost added to the comments array. this updates the store only if the status of the API is 200 (which means successful)
     case DELETE_COMMENT:
       let delcomments = [...state].filter(x=>x.id!== action.delcomment.id)
       return delcomments //filter the comments array and remove the deleted post. this keeps the API database and store in sync
@@ -78,9 +85,11 @@ function comments (state = initialCommentState, action) {
       return votecomments // return comments with ammended voteScore on the given comment. this keeps the API database and store in sync
     case EDIT_COMMENT:
       comments = [...state]
-      ix = comments.indexOf(action.oldComment)
-      comments[ix] = action.newComment
-      return comments // return comments with ammended data on the given comment. this keeps the API database and store in sync
+      if (action.status){
+        ix = comments.indexOf(action.oldComment)
+        comments[ix] = action.newComment
+      }
+      return comments // return comments with ammended data on the given comment. this updates the store only if the status of the API is 200 (which means successful)
     default :
       return state
   }
