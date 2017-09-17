@@ -5,6 +5,26 @@ const headers = {
   'Authorization': token,
   'Content-Type': 'application/json'
 }
+// API call to the backend node server. All he API calls are wrapped around promises
+// and the data / response is returned once the promise resolves
+// The api calls are the following:
+//  - apigetAllCategories: retrive all the categories
+//  - apigetAllPosts: retrive all the posts
+//  - getCategory: retrieve all posts of a give category
+//  - getPost: retrieve a post
+//  - apigetPostComments: retrieve all the comments of a give post
+//  - apiaddPost: add a post
+//  - apiaddComment: add a comment
+//  - addPostVote: vote on a post (vote is passed through option which is {'option': 'upVote' or 'downVote'})
+//  - addCommentVote: vote on a comment (vote is passed through option which is {'option': 'upVote' or 'downVote'})
+//  - apiaddPost: add a post
+//  - apiaddComment: add a comment
+//  - apieditComment: edit a comment
+//  - apieditPost: edit a post
+//  - apideletePost: delete a post
+//  - apideleteComment: delete a comment
+// Structure of each of the API calls is provided in the Readme file
+
 
 export const apigetAllCategories = () =>
   fetch(`${api}/categories`, { headers })

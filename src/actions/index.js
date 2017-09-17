@@ -1,3 +1,34 @@
+// This is the Redux action creator. There are two types of actions created in this file:
+// a) Pure functions - 'pure' functions that define the objects that are dispatched the reducer. As per their definition, These
+//    functions do not have any API calls. These actions within these pure functions are exported for use in the reducer
+//    - sortAllPosts: creator of SORT_POSTS action
+//    - getAllPosts: creator of RECEIVE_ALL_POSTS action
+//    - addPost: creator of ADD_POST action
+//    - editPost: creator of EDIT_POST action
+//    - delPost: creator of DELETE_POST action
+//    - sortAllComments: creator of SORT_COMMENTS action
+//    - changePostVote: creator of CHANGE_POST_VOTE action
+//    - getAllCategories: creator of RECEIVE_ALL_CATEGORIES action
+//    - getPostComments: creator of RECEIVE_POST_COMMENTS action
+//    - addComment: creator of ADD_COMMENT action
+//    - editComment: creator of EDIT_COMMENT action
+//    - delComment: creator of DELETE_COMMENT action
+//    - changeCommentVote: creator of CHANGE_COMMENT_VOTE action
+// b) Functions with async calls - These functions actually dispatch functions and not objects. The dispatched function in this
+//    case is intercepted by the redux-middleware (thunk) where the API call is actually made. Depending on the structure of
+//    these async functions (either based on resolving a promise or executed inline), once the exeternal data request is made
+//    a pure function is dispatched to the reducer. These functions have API calls:
+//    - fetchAllPosts: makes an API call to retrieve all posts and then dispatch getAllPosts with the posts to the reducer
+//    - postPost: makes an API call to add a new post and then dispatch addPost with the new post to the reducer
+//    - postPostVote: makes an API call to vote on a post and then dispatch changePostVote with a newPost (old post with the new voteScore)
+//    - postCommentVote: makes an API call to vote on a comment and then dispatch changeCommentVote with a newComment (old comment with the new voteScore)
+//    - postComment: makes an API call to add a new comment and then dispatch addComment with the new comment to the reducer
+//    - puteditPost: makes an API call to add new data to an existing post and then dispatch editPost with the old and new posts to the reducer
+//    - puteditComment: makes an API call to add new data to an existing comment and then dispatch editComment with the old and new comments to the reducer
+//    - deletePost: makes an API call to delete a post and then dispatch delPost with the deleted post to the reducer
+//    - deleteComment: makes an API call to delete a post and then dispatch delComment with the deleted comment to the reducer
+//    - fetchAllCategories: makes an API call to retrive all the categories and then dispatch getAllCategories with the categories to the reducer
+//    - fetchPostComments: makes an API call to retrive all the comments of a post and then dispatch getPostComments with the comments to the reducer
 import * as PostsAPI from '../components/postsApi'
 export const ADD_POST = 'ADD_POST'
 export const DELETE_POST = 'DELETE_POST'
@@ -13,18 +44,11 @@ export const CHANGE_POST_VOTE='CHANGE_POST_VOTE'
 export const EDIT_POST='EDIT_POST'
 export const EDIT_COMMENT='EDIT_COMMENT'
 
-
-
-export function sortPosts(key,posts) {
+export function sortAllPosts(key,posts) {
     return {
         type: SORT_POSTS,
         key: key,
         posts: posts
-    };
-}
-export function sortAllPosts(key,posts) {
-    return (dispatch) => {
-      dispatch(sortPosts(key,posts))
     };
 }
 export function getAllPosts(posts) {
@@ -144,20 +168,13 @@ export function deletePost(post) {
     };
 }
 
-export function sortComments(key,comments) {
+export function sortAllComments(key,comments) {
     return {
         type: SORT_COMMENTS,
         key: key,
         comments: comments
     };
 }
-export function sortAllComments(key,comments) {
-    return (dispatch) => {
-      dispatch(sortComments(key,comments))
-    };
-}
-
-
 export function delComment (comment) {
   return {
     type: DELETE_COMMENT,

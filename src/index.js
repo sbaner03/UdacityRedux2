@@ -1,3 +1,8 @@
+// This is the index.js of the overall application. This program does the following:
+// - import .css sytlesheets
+// - create redux store by passing the reducer and the middleware. here we use two middlewares - logger and thunk (for API calls)
+// - wrap the App component of the application around Provier for redux and Route for routing functionality respectively
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
@@ -28,7 +33,6 @@ const store = createStore(
     applyMiddleware(thunk,logger)
   )
 )
-
 ReactDOM.render(
   <BrowserRouter>
     <Provider store = {store}>

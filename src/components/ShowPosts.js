@@ -133,7 +133,7 @@ const mapDispatchToProps = dispatch => ({
   addPostprop: (post) => postPost(post)(dispatch), // add new post
   getAllPosts: () => fetchAllPosts()(dispatch), // get all posts
   getPostComments: (postid) => fetchPostComments(postid)(dispatch), // get all comments of a post
-  sortPosts: (key,posts)=> sortAllPosts(key,posts)(dispatch) // sort posts based on key selected
+  sortPosts: (key,posts)=> dispatch(sortAllPosts(key,posts)) // sort posts based on key selected
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(ShowPosts)

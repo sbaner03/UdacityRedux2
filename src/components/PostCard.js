@@ -209,7 +209,7 @@ function mapStateToProps ({comments}) {
 
 const mapDispatchToProps = dispatch => ({
   getPostComments: (postid) => fetchPostComments(postid)(dispatch), // pass the postid to get comments
-  sortComments: (key,comments)=> sortAllComments(key,comments)(dispatch), // pass the key and comments for sorting comments
+  sortComments: (key,comments)=> dispatch(sortAllComments(key,comments)), // pass the key and comments for sorting comments
   addCommentprop: (comment) => postComment(comment)(dispatch), // pass the new comment data
   changeCommentVoteprop: (comment,option) => postCommentVote(comment,option)(dispatch), // pass the comment and vote option data
   puteditCommentprop: (comment,newdata) => puteditComment(comment,newdata)(dispatch), // pass the comment and edited data
