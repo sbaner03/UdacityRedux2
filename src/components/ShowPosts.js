@@ -10,7 +10,7 @@ import Post from './Post'
 import { connect } from 'react-redux'
 import AddSign from 'react-icons/lib/md/add-circle';
 import { postPost, fetchAllPosts, fetchPostComments, sortAllPosts} from '../actions';
-import { DropdownButton, MenuItem,Modal,Button, FormGroup, FormControl,Alert } from 'react-bootstrap'
+import { DropdownButton, MenuItem,Modal,Button, FormGroup, FormControl } from 'react-bootstrap'
 import capitalize from 'capitalize'
 import shortid from 'shortid'
 // componentWillMount invokes the getAllPosts which in turn is linked to the action creator fetchAllPosts
@@ -107,9 +107,6 @@ class ShowPosts extends Component {
                   <DropdownButton bsStyle='primary' title='Select Category' id='dropdown-basic-1' onSelect = {this.handleCatSelection}>
                       {this.props.categories.map(x=>(<MenuItem eventKey= {x.name} key = {shortid.generate()}> {capitalize(x.name)} </MenuItem>))}
                   </DropdownButton>
-                  <Alert bsStyle="warning">
-                    <p> <strong>{this.props.newPost['category']}</strong> </p>
-                  </Alert>
                   <FormGroup controlId="formEnterCategory" >
                     {this.state.formfieldlist.map(field=>(
                         <FormControl key = {shortid.generate()} type='text' defaultValue= {`${capitalize(field)} of Post`} placeholder="Enter text" onChange={event => this.handleChange(event,field)}/>
